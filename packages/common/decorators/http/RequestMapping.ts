@@ -1,5 +1,5 @@
 import {decorate, injectable} from 'inversify'
-import {router} from '../../interface/router'
+import {router} from '@akajs/core'
 import {METADATA_KEY} from './Constants'
 
 export function Controller (path: string, ...middleware: router.Middleware[]) {

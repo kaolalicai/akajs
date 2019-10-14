@@ -6,7 +6,7 @@
   "types": "src/index.ts",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "build": "gulp build --dist node_modules/@nestjs",
+    "build": "gulp build --dist node_modules/@akajs",
     "test": "NODE_ENV=test mocha -t 5000 -r ts-node/register test/**/*.test.ts ",
     "cov": "nyc npm test",
     "prepublishOnly": "npm run build",

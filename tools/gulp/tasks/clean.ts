@@ -1,12 +1,12 @@
-import { task, src, series } from 'gulp';
-import { source } from '../config';
-import * as clean from 'gulp-clean';
-import * as deleteEmpty from 'delete-empty';
+import {task, src, series} from 'gulp'
+import {source} from '../config'
+import * as clean from 'gulp-clean'
+import * as deleteEmpty from 'delete-empty'
 
 /**
  * Cleans the build output assets from the packages folders
  */
-function cleanOutput() {
+function cleanOutput () {
   return src(
     [
       `${source}/**/*.js`,
@@ -17,17 +17,17 @@ function cleanOutput() {
     {
       read: false,
     },
-  ).pipe(clean());
+  ).pipe(clean())
 }
 
 /**
  * Cleans empty dirs
  */
-function cleanDirs(done: () => void) {
-  deleteEmpty.sync(`${source}/`);
-  done();
+function cleanDirs (done: () => void) {
+  deleteEmpty.sync(`${source}/`)
+  done()
 }
 
-task('clean:output', cleanOutput);
-task('clean:dirs', cleanDirs);
-task('clean:bundle', series('clean:output', 'clean:dirs'));
+task('clean:output', cleanOutput)
+task('clean:dirs', cleanDirs)
+task('clean:bundle', series('clean:output', 'clean:dirs'))

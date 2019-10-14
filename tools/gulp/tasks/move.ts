@@ -12,10 +12,10 @@ function move () {
   const integrationDirs = getDirs(integrationPath)
   const directories = samplesDirs.concat(integrationDirs)
 
-  const distFiles = src(['node_modules/@nestjs/**/*'])
+  const distFiles = src(['node_modules/@akajs/**/*'])
 
   return directories.reduce(
-    (distFile, dir) => distFile.pipe(dest(join(dir, '/node_modules/@nestjs'))),
+    (distFile, dir) => distFile.pipe(dest(join(dir, '/node_modules/@akajs'))),
     distFiles
   )
 }

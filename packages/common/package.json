@@ -1,0 +1,11 @@
+{
+  "name": "@aka/common",
+  "version": "0.0.1",
+  "description": "aka common",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "nick",
+  "license": "MIT"
+}
