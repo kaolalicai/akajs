@@ -1,14 +1,14 @@
 import 'reflect-metadata'
 import {interfaces as inversifyInterfaces} from 'inversify'
-import {METADATA_KEY, NO_CONTROLLERS_FOUND, TYPE} from './constants'
-import {interfaces} from './interfaces'
+import {METADATA_KEY, NO_CONTROLLERS_FOUND, TYPE} from '../constants'
+import {router} from '../interfaces/router'
 
 export function getControllersFromContainer (
   container: inversifyInterfaces.Container,
   forceControllers: boolean
 ) {
   if (container.isBound(TYPE.Controller)) {
-    return container.getAll<interfaces.Controller>(TYPE.Controller)
+    return container.getAll<router.Controller>(TYPE.Controller)
   } else if (forceControllers) {
     throw new Error(NO_CONTROLLERS_FOUND)
   } else {
@@ -17,7 +17,7 @@ export function getControllersFromContainer (
 }
 
 export function getControllersFromMetadata () {
-  let arrayOfControllerMetadata: interfaces.ControllerMetadata[] = Reflect.getMetadata(
+  let arrayOfControllerMetadata: router.ControllerMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controller,
     Reflect
   ) || []
@@ -25,7 +25,7 @@ export function getControllersFromMetadata () {
 }
 
 export function getControllerMetadata (constructor: any) {
-  let controllerMetadata: interfaces.ControllerMetadata = Reflect.getMetadata(
+  let controllerMetadata: router.ControllerMetadata = Reflect.getMetadata(
     METADATA_KEY.controller,
     constructor
   )
@@ -33,14 +33,14 @@ export function getControllerMetadata (constructor: any) {
 }
 
 export function getControllerMethodMetadata (constructor: any) {
-  let methodMetadata: interfaces.ControllerMethodMetadata[] = Reflect.getMetadata(
+  let methodMetadata: router.ControllerMethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
     constructor
   )
   return methodMetadata
 }
 
-export function getDtoMetadata (constructor: any, method: string): interfaces.ControllerMethodParameterMetadata {
+export function getDtoMetadata (constructor: any, method: string): router.ControllerMethodParameterMetadata {
   return Reflect.getMetadata(
     METADATA_KEY.controllerParameter + method,
     constructor

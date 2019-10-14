@@ -2,28 +2,28 @@ import {Context} from 'koa'
 import {assign, cloneDeep} from 'lodash'
 import {validateOrReject} from 'class-validator'
 import * as inversify from 'inversify'
-import {interfaces} from './interfaces'
 import {
   getControllerMetadata,
   getControllerMethodMetadata,
   getControllersFromContainer,
   getControllersFromMetadata,
   getDtoMetadata
-} from './utils'
-import {DUPLICATED_CONTROLLER_NAME, TYPE} from './constants'
+} from '../utils/MetaData'
+import {DUPLICATED_CONTROLLER_NAME, TYPE} from '../constants'
+import {router} from '../interfaces/router'
 
 export type RouterMiddleware = (ctx: Context, next: Function) => Promise<any>
 export type RouterHandle = (ctx: Context) => Promise<any>
 
-export class InversifyKoaServer {
+export class RouterBuilder {
   private readonly _router: any
   private readonly _container: inversify.interfaces.Container
   private _forceControllers: boolean
-  private _routingConfig: interfaces.RoutingConfig
+  private _routingConfig: router.RoutingConfig
 
   constructor (container: inversify.interfaces.Container,
                router: any,
-               routingConfig?: interfaces.RoutingConfig | null) {
+               routingConfig?: router.RoutingConfig | null) {
     this._container = container
     this._router = router
     this._routingConfig = routingConfig
@@ -51,7 +51,7 @@ export class InversifyKoaServer {
       this._forceControllers
     )
 
-    controllers.forEach((controller: interfaces.Controller) => {
+    controllers.forEach((controller: router.Controller) => {
 
       let controllerMetadata = getControllerMetadata(controller.constructor)
       let methodMetadata = getControllerMethodMetadata(controller.constructor)
@@ -60,8 +60,8 @@ export class InversifyKoaServer {
 
         let controllerMiddleware = this.resolveMiddleware(...controllerMetadata.middleware)
 
-        methodMetadata.forEach((metadata: interfaces.ControllerMethodMetadata) => {
-          // let paramList: interfaces.ParameterMetadata[] = []
+        methodMetadata.forEach((metadata: router.ControllerMethodMetadata) => {
+          // let paramList: router.ParameterMetadata[] = []
           // if (parameterMetadata) {
           //   paramList = parameterMetadata[metadata.key] || []
           // }
@@ -81,9 +81,9 @@ export class InversifyKoaServer {
   }
 
   private handlerFactory (
-    controller: interfaces.Controller,
+    controller: router.Controller,
     methodName: string
-    // parameterMetadata: interfaces.ParameterMetadata[]
+    // parameterMetadata: router.ParameterMetadata[]
   ): RouterHandle {
     let dtoMetadata = getDtoMetadata(controller.constructor, methodName)
     return async (ctx: Context) => {
@@ -99,7 +99,7 @@ export class InversifyKoaServer {
     }
   }
 
-  private async modifyDTOParameters (ctx: Context, args, dtoMetadata: interfaces.ControllerMethodParameterMetadata): Promise<any[]> {
+  private async modifyDTOParameters (ctx: Context, args, dtoMetadata: router.ControllerMethodParameterMetadata): Promise<any[]> {
     const parameters = this.extractParameters(ctx)
     args[0] = ctx
     args[1] = parameters
@@ -118,7 +118,7 @@ export class InversifyKoaServer {
     return parameters
   }
 
-  private resolveMiddleware (...middleware: interfaces.Middleware[]): RouterMiddleware[] {
+  private resolveMiddleware (...middleware: router.Middleware[]): RouterMiddleware[] {
     return middleware.map(middlewareItem => {
       if (!this._container.isBound(middlewareItem)) {
         return middlewareItem as RouterMiddleware

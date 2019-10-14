@@ -1,11 +1,11 @@
-import {interfaces} from './interfaces'
 import {decorate, injectable} from 'inversify'
-import {METADATA_KEY} from './constants'
+import {router} from '../../interface/router'
+import {METADATA_KEY} from './Constants'
 
-export function Controller (path: string, ...middleware: interfaces.Middleware[]) {
+export function Controller (path: string, ...middleware: router.Middleware[]) {
   return function (target: any) {
 
-    let currentMetadata: interfaces.ControllerMetadata = {
+    let currentMetadata: router.ControllerMetadata = {
       middleware: middleware,
       path: path,
       target: target
@@ -20,7 +20,7 @@ export function Controller (path: string, ...middleware: interfaces.Middleware[]
     // We attach metadata to the Reflect object itself to avoid
     // declaring additonal globals. Also, the Reflect is avaiable
     // in both node and web browsers.
-    const previousMetadata: interfaces.ControllerMetadata[] = Reflect.getMetadata(
+    const previousMetadata: router.ControllerMetadata[] = Reflect.getMetadata(
       METADATA_KEY.controller,
       Reflect
     ) || []
@@ -36,18 +36,22 @@ export function Controller (path: string, ...middleware: interfaces.Middleware[]
   }
 }
 
-export function Get (path: string, ...middleware: interfaces.Middleware[]): interfaces.HandlerDecorator {
+export function Get (path: string, ...middleware: router.Middleware[]): router.HandlerDecorator {
   return httpMethod('get', path, ...middleware)
 }
 
-export function Post (path: string, ...middleware: interfaces.Middleware[]): interfaces.HandlerDecorator {
+export function Post (path: string, ...middleware: router.Middleware[]): router.HandlerDecorator {
   return httpMethod('post', path, ...middleware)
 }
 
-export function httpMethod (method: string, path: string, ...middleware: interfaces.Middleware[]): interfaces.HandlerDecorator {
+export function Put (path: string, ...middleware: router.Middleware[]): router.HandlerDecorator {
+  return httpMethod('put', path, ...middleware)
+}
+
+export function httpMethod (method: string, path: string, ...middleware: router.Middleware[]): router.HandlerDecorator {
   return function (target: any, key: string, value: any) {
 
-    let metadata: interfaces.ControllerMethodMetadata = {
+    let metadata: router.ControllerMethodMetadata = {
       key,
       method,
       middleware,
@@ -58,9 +62,9 @@ export function httpMethod (method: string, path: string, ...middleware: interfa
   }
 }
 
-export function addRouterMetadata (metadata: interfaces.ControllerMethodMetadata) {
+export function addRouterMetadata (metadata: router.ControllerMethodMetadata) {
 
-  let metadataList: interfaces.ControllerMethodMetadata[] = []
+  let metadataList: router.ControllerMethodMetadata[] = []
 
   if (!Reflect.hasMetadata(METADATA_KEY.controllerMethod, metadata.target.constructor)) {
     Reflect.defineMetadata(METADATA_KEY.controllerMethod, metadataList, metadata.target.constructor)

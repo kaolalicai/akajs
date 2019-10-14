@@ -1,0 +1,20 @@
+{
+  "name": "@aka/core",
+  "version": "0.0.1",
+  "description": "aka core",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "nick",
+  "license": "MIT",
+  "dependencies": {
+    "class-validator": "^0.10.1",
+    "inversify": "^5.0.1",
+    "koa": "^2.10.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-morgan": "^1.0.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "lodash": "^4.17.15"
+  }
+}
