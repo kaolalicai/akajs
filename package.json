@@ -51,13 +51,20 @@
     "@types/node": "^12.7.8",
     "@types/supertest": "^2.0.8",
     "chai": "^4.2.0",
+    "husky": "^3.0.9",
     "koa": "^2.8.1",
     "mocha": "^6.2.0",
     "supertest": "^4.0.2",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
-    "tslint-config-klg": "^1.0.5",
+    "tslint-config-klg": "^2.0.0",
     "typescript": "^3.6.3",
     "webstorm-disable-index": "^1.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
