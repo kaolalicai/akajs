@@ -1,0 +1,63 @@
+{
+  "name": "@aka/core",
+  "version": "0.1.2",
+  "description": "Kalengo web framework helper",
+  "main": "dist/src/index.js",
+  "types": "src/index.ts",
+  "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
+    "build": "tsc -d -p ./",
+    "test": "NODE_ENV=test mocha -t 5000 -r ts-node/register test/**/*.test.ts ",
+    "cov": "nyc npm test",
+    "prepublishOnly": "npm run build",
+    "pretest": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaolalicai/aka"
+  },
+  "keywords": [
+    "klg"
+  ],
+  "author": "nick",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 8.9.0"
+  },
+  "dependencies": {
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/lodash": "^4.14.139",
+    "@types/mongoose": "^5.5.18",
+    "class-validator": "^0.10.1",
+    "config": "^3.2.2",
+    "inversify": "^5.0.1",
+    "inversify-binding-decorators": "^4.0.0",
+    "klg-date": "^1.1.5",
+    "klg-logger": "^3.0.1",
+    "klg-number": "^1.0.7",
+    "koa-bodyparser": "^4.2.1",
+    "koa-morgan": "^1.0.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.7.3",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@types/koa": "^2.0.50",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.8",
+    "@types/supertest": "^2.0.8",
+    "chai": "^4.2.0",
+    "koa": "^2.8.1",
+    "mocha": "^6.2.0",
+    "supertest": "^4.0.2",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
+    "tslint-config-klg": "^1.0.5",
+    "typescript": "^3.6.3",
+    "webstorm-disable-index": "^1.2.0"
+  }
+}
