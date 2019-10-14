@@ -1,17 +1,22 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2017",
-    "lib": ["es7"],
-    "moduleResolution": "node",
+    "declaration": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": false,
+    "removeComments": false,
+    "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "target": "es2017",
+    "sourceMap": false,
+    "allowJs": false,
     "strict": true,
-    "noLib": false,
-    "skipLibCheck": true
+    "strictNullChecks": false
   },
   "exclude": [
-    "node_modules"
+    "../node_modules"
   ]
 }
