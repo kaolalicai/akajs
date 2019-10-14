@@ -7,10 +7,12 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "build": "gulp build --dist node_modules/@akajs",
+    "build:prod": "gulp build",
     "test": "NODE_ENV=test mocha -t 5000 -r ts-node/register test/**/*.test.ts ",
     "cov": "nyc npm test",
     "prepublishOnly": "npm run build",
-    "pretest": "npm run lint"
+    "pretest": "npm run lint",
+    "prerelease": "gulp copy-misc && gulp build --dist node_modules/@akajs"
   },
   "repository": {
     "type": "git",
@@ -58,6 +60,7 @@
     "gulp-typescript": "^5.0.1",
     "husky": "^3.0.9",
     "koa": "^2.10.0",
+    "lerna": "^3.17.0",
     "mocha": "^6.2.0",
     "supertest": "^4.0.2",
     "ts-node": "^8.4.1",
