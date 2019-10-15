@@ -1,7 +1,11 @@
-import {Controller, Get} from '@akajs/core'
+import {Get, Inject} from '@akajs/core'
+import {CrudController, ICurdController} from '@akajs/crud'
 
-@Controller('/user')
-export class UserController {
+@CrudController('/user')
+export class UserController implements ICurdController {
+
+  @Inject(Symbol.for('UserModel'))
+  public crudModel
 
   @Get('/hello/:name')
   async hello (ctx) {

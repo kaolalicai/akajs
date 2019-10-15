@@ -12,4 +12,3 @@ export const TYPE = {
 export const METADATA_KEY = {
   model: 'inversify-mongoose-utils:model'
 }
-

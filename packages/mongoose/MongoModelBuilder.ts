@@ -34,7 +34,7 @@ export class MongoModelBuilder {
     let models = getModelsFromContainer(container, false)
 
     models.forEach((model: IBaseMongoModel) => {
-      const m: IBaseMongoModel = container.resolve(model as any)
+      const m: IBaseMongoModel = container.resolve(model.constructor as any)
       if (!m.db) {
         m.db = this.connection.defaultCon
       }
@@ -48,4 +48,3 @@ export class MongoModelBuilder {
   }
 }
 
-new MongoModelBuilder().build()

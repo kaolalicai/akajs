@@ -1,0 +1,16 @@
+{
+  "name": "@akajs/crud",
+  "version": "0.0.1",
+  "description": "aka mongoose",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "nick",
+  "license": "MIT",
+  "dependencies": {
+    "@akajs/core": "^0.0.1",
+    "@akajs/utils": "^0.0.1",
+    "config": "^3.2.3",
+    "lodash": "^4.17.15"
+  }
+}

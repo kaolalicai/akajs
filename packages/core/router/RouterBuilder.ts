@@ -1,3 +1,4 @@
+import {logger} from '@akajs/utils'
 import {Context} from 'koa'
 import {assign, cloneDeep} from 'lodash'
 import {validateOrReject} from 'class-validator'
@@ -68,7 +69,7 @@ export class RouterBuilder {
           let methodName = metadata.key
           let handler: RouterHandle = this.handlerFactory(controller, methodName)
           let routeMiddleware: RouterMiddleware[] = this.resolveMiddleware(...metadata.middleware)
-          console.log('register router', metadata.method, controllerMetadata.target.name, controllerMetadata.path, metadata.path)
+          logger.debug('register router', metadata.method, controllerMetadata.target.name, controllerMetadata.path, metadata.path)
           this._router[metadata.method](
             `${controllerMetadata.path}${metadata.path}`,
             ...controllerMiddleware,
@@ -86,9 +87,10 @@ export class RouterBuilder {
     // parameterMetadata: router.ParameterMetadata[]
   ): RouterHandle {
     let dtoMetadata = getDtoMetadata(controller.constructor, methodName)
-    return async (ctx: Context) => {
+    let _this = this
+    return async function (ctx: Context) {
       try {
-        let args = await this.modifyDTOParameters(ctx, arguments, dtoMetadata)
+        let args = await _this.modifyDTOParameters(ctx, dtoMetadata)
         // invoke controller's action
         // console.log('controller[methodName]', controller[methodName], methodName)
         await controller[methodName](...args)
@@ -99,8 +101,9 @@ export class RouterBuilder {
     }
   }
 
-  private async modifyDTOParameters (ctx: Context, args, dtoMetadata: router.ControllerMethodParameterMetadata): Promise<any[]> {
+  private async modifyDTOParameters (ctx: Context, dtoMetadata: router.ControllerMethodParameterMetadata): Promise<any[]> {
     const parameters = this.extractParameters(ctx)
+    const args = []
     args[0] = ctx
     args[1] = parameters
     if (dtoMetadata && dtoMetadata.index !== undefined && dtoMetadata.index !== null) {

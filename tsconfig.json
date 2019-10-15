@@ -9,7 +9,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es6",
-    "sourceMap": true,
+    "sourceMap": false,
     "allowJs": true,
     "outDir": "dist",
     "lib": [
@@ -20,7 +20,5 @@
     "packages/**/*",
     "integration/**/*"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

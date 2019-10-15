@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "types": "src/index.ts",
   "scripts": {
-    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
+    "lint": "tslint -p tsconfig.json -c tslint.json \"packages/**/*.ts\" -e \"*.spec.ts\"",
     "build": "gulp build --dist node_modules/@akajs",
     "postbuild": "gulp move",
     "test": "NODE_ENV=test mocha -t 5000 -r ts-node/register test/**/*.test.ts ",

@@ -1,8 +1,12 @@
 import {Context} from 'koa'
 import {assign} from 'lodash'
-import {addRouterMetadata, Controller} from '../core/router/decorators'
+import {addRouterMetadata, Controller} from '@akajs/core'
 import {decorate} from 'inversify'
 import {ICurdController} from './crudController'
+
+function checkModel (model) {
+  if (!model) throw new Error('CRUD Controller 必须定义 crudModel')
+}
 
 export function CrudController<T extends ICurdController> (path?: string) {
   return function (constructor: Function) {
@@ -11,7 +15,8 @@ export function CrudController<T extends ICurdController> (path?: string) {
     // Controller(path)(constructor)
 
     // 注册路由
-    constructor.prototype.findAll = constructor.prototype.findAll || async function findAll (ctx: Context, parameters) {
+    constructor.prototype.findAll = constructor.prototype.findAll || async function findAll (this: ICurdController, ctx: Context, parameters) {
+      checkModel(this.crudModel)
       ctx.body = await this.crudModel.find(parameters)
     }
     addRouterMetadata({
@@ -22,7 +27,8 @@ export function CrudController<T extends ICurdController> (path?: string) {
       target: {constructor}
     })
 
-    constructor.prototype.findOne = constructor.prototype.findOne || async function findOne (ctx: Context) {
+    constructor.prototype.findOne = constructor.prototype.findOne || async function findOne (this: ICurdController, ctx: Context) {
+      checkModel(this.crudModel)
       const {itemId} = ctx.params
       const one = await this.crudModel.findById(itemId)
       if (!one) throw new Error('找不到 ' + path + ' id:' + itemId)
@@ -36,7 +42,8 @@ export function CrudController<T extends ICurdController> (path?: string) {
       target: {constructor}
     })
 
-    constructor.prototype.create = constructor.prototype.create || async function create (ctx: Context, itemDto) {
+    constructor.prototype.create = constructor.prototype.create || async function create (this: ICurdController, ctx: Context, itemDto) {
+      checkModel(this.crudModel)
       ctx.body = await new this.crudModel(itemDto).save()
     }
     addRouterMetadata({
@@ -47,7 +54,8 @@ export function CrudController<T extends ICurdController> (path?: string) {
       target: {constructor}
     })
 
-    constructor.prototype.update = constructor.prototype.update || async function update (ctx: Context, itemDto) {
+    constructor.prototype.update = constructor.prototype.update || async function update (this: ICurdController, ctx: Context, itemDto) {
+      checkModel(this.crudModel)
       const itemId = ctx.params.itemId
       const one = await this.crudModel.findById(itemId)
       if (!one) throw new Error('找不到 ' + path + ' ' + itemId)
