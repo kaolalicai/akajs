@@ -25,5 +25,5 @@ export interface ICurdController {
 
   update? (ctx: Context): Promise<void>
 
-  delete? (ctx: Context): Promise<void>
+  remove? (ctx: Context): Promise<void>
 }

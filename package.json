@@ -6,14 +6,19 @@
   "types": "src/index.ts",
   "scripts": {
     "lint": "tslint -p tsconfig.json -c tslint.json \"packages/**/*.ts\" -e \"*.spec.ts\"",
+    "clean": "gulp clean:bundle",
+    "prebuild": "rm -rf node_modules/@akajs",
     "build": "gulp build --dist node_modules/@akajs",
     "postbuild": "gulp move",
-    "test": "NODE_ENV=test mocha -t 5000 -r ts-node/register test/**/*.test.ts ",
+    "prebuild:prod": "npm run clean",
+    "build:prod": "gulp build",
     "integration-test": "mocha \"integration/*/{,!(node_modules)/**/}/*.spec.ts\" --reporter spec --require ts-node/register",
-    "cov": "nyc npm test",
-    "prepublishOnly": "npm run build",
-    "pretest": "npm run lint",
-    "prerelease": "gulp copy-misc && gulp build --dist node_modules/@akajs"
+    "prerelease": "gulp copy-misc && gulp build --dist node_modules/@akajs",
+    "publish": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --force-publish --access public --exact -m \"chore(@akajs) publish %s release\"",
+    "publish:rc": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --npm-tag=rc --access public -m \"chore(@akajs) publish %s release\"",
+    "publish:next": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --npm-tag=next --access public --skip-git -m \"chore(@akajs) publish %s release\"",
+    "publish:beta": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --npm-tag=beta --access public -m \"chore(@nestjs) akajs %s release\"",
+    "publish:test": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --force-publish --access public --npm-tag=test --skip-git -m \"chore(@akajs) publish %s release\""
   },
   "repository": {
     "type": "git",
