@@ -1,8 +1,7 @@
-import {container, TYPES} from '../cantainer'
-import {Connection} from 'mongoose'
-import {dbs} from './MongooseConnection'
+import {MongooseConnection} from './MongooseConnection'
 
-const defaultCon: Connection = container.get(TYPES.MONGO_DEFAULT_CONNECTION)
+const dbs = MongooseConnection.getInstance().dbs
+const defaultCon = MongooseConnection.getInstance().defaultCon
 
 export function getConnections () {
   return dbs.values()
@@ -19,29 +18,16 @@ export function getModel (str) {
   return model
 }
 
-export function closeDB (callback) {
-  closeMongodb(callback)
-}
-
-export function closeMongodb (callback) {
-  defaultCon.close(callback)
+export async function closeDB (callback) {
+  await defaultCon.close(callback)
 }
 
 export async function clearDB () {
-  await clearMongodb()
-  await clearRedis()
-}
-
-export async function clearMongodb () {
   for (let db of dbs.values()) {
     for (let model of Object.values(db.models)) {
       await (model as any).deleteMany({})
     }
   }
-}
-
-export async function clearRedis () {
-  // TODO
 }
 
 export async function initFixtureData (data: { model: string, items: any[] }[]) {
