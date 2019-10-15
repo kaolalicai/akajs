@@ -69,5 +69,21 @@ export function CrudController<T extends ICurdController> (path?: string) {
       path: '/:itemId',
       target: {constructor}
     })
+
+    constructor.prototype.remove = constructor.prototype.remove || async function remove (this: ICurdController, ctx: Context) {
+      checkModel(this.crudModel)
+      const itemId = ctx.params.itemId
+      const one = await this.crudModel.findById(itemId)
+      if (!one) throw new Error('找不到 ' + path + ' ' + itemId)
+      await this.crudModel.remove({_id: itemId})
+      ctx.body = 'success'
+    }
+    addRouterMetadata({
+      key: 'remove',
+      method: 'delete',
+      middleware: [],
+      path: '/:itemId',
+      target: {constructor}
+    })
   }
 }
