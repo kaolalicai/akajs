@@ -13,5 +13,6 @@
     "klg-logger": "^3.0.1",
     "klg-number": "^1.0.7",
     "lodash": "^4.17.15"
-  }
+  },
+  "gitHead": "1f8b55a24fcb162e3bc2a1db8d5c11b6b5b2c6ab"
 }
