@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import {AppError, logger} from '../../util'
+import {AppError, logger} from '../../utils'
 
 export function responseFormatter (pattern) {
   return async (ctx, next) => {

@@ -1,5 +1,5 @@
 import * as config from 'config'
-import {logger} from '../util'
+import {logger} from '../utils'
 import * as mongoose from 'mongoose'
 
 (mongoose as any).Promise = Promise

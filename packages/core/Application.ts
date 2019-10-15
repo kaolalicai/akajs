@@ -1,5 +1,8 @@
 import 'reflect-metadata'
 import {buildRouters} from './router'
+import * as config from 'config'
+import * as http from 'http'
+import {logger} from '@akajs/utils'
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
 import * as morgan from 'koa-morgan'
@@ -10,31 +13,61 @@ import {parameters} from './middleware/Parameters'
 import {container} from './cantainer'
 import {httpServe} from './interfaces/http'
 
+export const routerPrefix = '/api/v1'
+
 export class Application {
+  private app
+  private server
+
+  constructor (config: httpServe.IKoaConfig) {
+    this.createServe(config)
+  }
+
   createServe (config: httpServe.IKoaConfig) {
-    const serve = new Koa()
+    this.app = new Koa()
     // middleware
-    serve.use(bodyParser())
-    serve.use(morgan('tiny', {
+    this.app.use(bodyParser())
+    this.app.use(morgan('tiny', {
       skip: function (req, res) {
         return /\/docs\//.exec(req.url) || /\/healthcheck\//.exec(req.url)
       }
     }))
 
     // response format and  error handle
-    serve.use(responseFormatter('^/api'))
+    this.app.use(responseFormatter('^/api'))
 
     // 将所有参数注册到 ctx.parameters
-    serve.use(parameters)
+    this.app.use(parameters)
 
     // statics
-    serve.use(koaStatic('assets'))
+    this.app.use(koaStatic('assets'))
 
     // routers
-    const router = new Router({prefix: '/api/v1'})
+    const router = new Router({prefix: routerPrefix})
     buildRouters(container, router)
-    serve.use(router.routes())
-    serve.use(router.allowedMethods())
-    return serve
+    this.app.use(router.routes())
+    this.app.use(router.allowedMethods())
+    return this.app
+  }
+
+  getHttpServer () {
+    this.server = http.createServer(this.app.callback())
+    return this.server
+  }
+
+  async close () {
+    this.server.close()
+  }
+
+  async init () {
+    const port = config.get('port')
+    this.getHttpServer()
+    return new Promise((resolve, reject) => {
+      this.server.listen(port, () => {
+        logger.info(` app star in ${process.env.NODE_ENV || 'local'} env `)
+        // logger.info(` app star in ${(Date.now() - time) / 1000} s, listen on port ${port}`)
+        resolve()
+      })
+    })
   }
 }

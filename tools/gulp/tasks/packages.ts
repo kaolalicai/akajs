@@ -6,7 +6,7 @@ import * as log from 'fancy-log'
 
 // Has to be a hardcoded object due to build order
 const packages = {
-  common: createProject('packages/common/tsconfig.json'),
+  utils: createProject('packages/utils/tsconfig.json'),
   core: createProject('packages/core/tsconfig.json')
 }
 

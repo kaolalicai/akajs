@@ -1,7 +1,6 @@
-import { Module } from '@nestjs/common';
-import { HelloModule } from './hello/hello.module';
+import {Application} from '@akajs/core'
 
-@Module({
-  imports: [HelloModule],
-})
-export class ApplicationModule {}
+import './controller/UserController'
+
+const app: Application = new Application({})
+export {app}

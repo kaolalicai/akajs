@@ -11,7 +11,7 @@ function copyMisc (): NodeJS.ReadWriteStream {
   // ourselves
   return packagePaths.reduce(
     (stream, packagePath) => stream.pipe(dest(packagePath)),
-    miscFiles,
+    miscFiles
   )
 }
 

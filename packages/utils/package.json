@@ -1,7 +1,7 @@
 {
-  "name": "@aka/common",
+  "name": "@akajs/utils",
   "version": "0.0.1",
-  "description": "aka common",
+  "description": "aka utils",
   "main": "index.js",
   "scripts": {
     "test": "npm run test"
@@ -9,6 +9,9 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
+    "klg-date": "^1.1.5",
+    "klg-logger": "^3.0.1",
+    "klg-number": "^1.0.7",
     "lodash": "^4.17.15"
   }
 }

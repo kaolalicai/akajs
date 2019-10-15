@@ -7,8 +7,9 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "build": "gulp build --dist node_modules/@akajs",
-    "build:prod": "gulp build",
+    "postbuild": "gulp move",
     "test": "NODE_ENV=test mocha -t 5000 -r ts-node/register test/**/*.test.ts ",
+    "integration-test": "mocha \"integration/*/{,!(node_modules)/**/}/*.spec.ts\" --reporter spec --require ts-node/register",
     "cov": "nyc npm test",
     "prepublishOnly": "npm run build",
     "pretest": "npm run lint",

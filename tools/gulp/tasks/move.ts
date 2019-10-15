@@ -4,13 +4,13 @@ import {samplePath, integrationPath} from '../config'
 import {join} from 'path'
 
 /**
- * Moves the compiled nest files into the
+ * Moves the compiled aka files into the
  * `samples/*` and `integration/*` dirs.
  */
 function move () {
-  const samplesDirs = getDirs(samplePath)
-  const integrationDirs = getDirs(integrationPath)
-  const directories = samplesDirs.concat(integrationDirs)
+  // const samplesDirs = getDirs(samplePath)
+  // const integrationDirs = getDirs(integrationPath)
+  const directories = getDirs(integrationPath)
 
   const distFiles = src(['node_modules/@akajs/**/*'])
 
