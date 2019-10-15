@@ -1,6 +1,6 @@
 {
   "name": "@akajs/utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "aka utils",
   "main": "index.js",
   "scripts": {
@@ -14,5 +14,5 @@
     "klg-number": "^1.0.7",
     "lodash": "^4.17.15"
   },
-  "gitHead": "1f8b55a24fcb162e3bc2a1db8d5c11b6b5b2c6ab"
+  "gitHead": "852a352fb0ef5a64d1b5939a9b6c7d06839b501e"
 }
