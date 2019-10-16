@@ -11,7 +11,7 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@aka/utils": "^0.0.1",
+    "@akajs/utils": "^0.0.1",
     "@types/koa": "^2.0.50",
     "class-validator": "^0.10.1",
     "inversify": "^5.0.1",

@@ -283,6 +283,13 @@ module.exports = [
 
 注意：这个测试方式是为了缺少简单好用事务的 mongodb 定制的。如果你使用事务型 db，不需要这么做。
 
+### 测试辅助工具
+
+sinon ：function mock
+nock : http mock
+timekeeper : time mock
+chai.expect : 断言
+
 ## TODO
 接下来 akajs 还要集成以下常用工具
 - redis/redlock
