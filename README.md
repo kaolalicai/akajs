@@ -17,7 +17,7 @@ akajs 并不适合拿来开箱即用，但是它可以给你一个参考
 
 ## QuickStart
 
-可以直接使用我们的 klg-init 工具来初始化我们的项目，如果没有 klg-init, 请先安装
+可以直接使用我们的 klg-init 工具来初始化项目，如果没有 klg-init, 请先安装
 
 `npm i klg-init -g`
 
@@ -227,6 +227,14 @@ export class UserController {
 - NumUtil ： 主要处理 0.1 + 0.2 = 0.30000000000000004 问题
 - Logger ： logger 工具，包含logger代码位置
 - AppError ：自定义错误对象，有 error code
+
+```ts
+import {logger} from '@akajs/utils'
+
+logger.debug('hello', name)
+// 两天后
+    DateUtil.getDayStart(null, 2)
+```
 
 ## API 接口文档
 akajs 的期望是，可以根据代码自动生成接口文档，但是这里还有些技术 block，typescript 的 ast 读取还是有些麻烦，需要些时间。

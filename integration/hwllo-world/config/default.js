@@ -1,6 +1,6 @@
 module.exports = {
   log: {
-    level: 'info'
+    level: 'debug'
   },
   port: process.env.PORT || 3000
 }
