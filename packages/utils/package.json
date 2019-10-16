@@ -6,6 +6,9 @@
   "scripts": {
     "test": "npm run test"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "nick",
   "license": "MIT",
   "dependencies": {
