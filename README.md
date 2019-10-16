@@ -7,13 +7,14 @@ akajs 是为 Kalengo 定制的。
 
 又比如 akajs 暂时只支持 mongodb，因为我们公司业务 mongodb 就足够支撑了。
 
-akajs 并不适合拿来开箱即用，但是它可以给你一个参考
+akajs 并不适合所有项目，但是它可以给你一个参考
 - 如何包装 mongoose
 - 如何校验参数和处理全局异常
 - 如何集成 IOC
 - 如何做集成测试
 等等
 
+akajs 会参考 NestJs 和 Egg.js 两个框架的设计
 
 ## QuickStart
 
@@ -26,6 +27,37 @@ akajs 并不适合拿来开箱即用，但是它可以给你一个参考
 `klg-init <dir>`
 
 选择"Typescript 后端项目模板"即可
+
+## 模块化
+在项目变复杂的时候，进行模块划分降低复杂度的有效方法。
+在之前一些项目中，我通过文件夹隔离的方式来实现模块化
+```
+src
+    user
+        controller
+        service
+        index.ts
+        modules.ts
+    order
+        controller
+        service
+        index.ts
+        modules.ts
+```
+每个模块都有自己的 mvc，使用 index.ts 来向外暴露方法，使用 modules.ts 来声明引入其他模块
+在 order 模块里使用 user 模块就像这样：
+
+```ts
+import {userModule} from '../modules'
+
+await userMoudle.findUser()
+
+```
+这个方式足够简单，但是需要开发自觉维护规范。
+
+而 NestJs 则提供了 Module 的注解，来强制定义模块，也是不错的方法。
+
+**不过在云原生时代，有了 k8s 的辅助，最好还是不要做模块化了，拆成多个服务吧，服务足够小的情况下，分工和技术升级会简单很多**
 
 ## 注解式路由
 
