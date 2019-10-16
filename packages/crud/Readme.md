@@ -2,7 +2,9 @@
 akajs 并不是一个Web框架，它是 Kalengo 的一堆 Node.js 的后端开发实践，其目的是把这些开发实践变成一个包，方便开发快速搭建一个后端服务。
 
 akajs 是为 Kalengo 定制的。
+
 比如 akajs 是基于 koa 做包装而不是 express，原因是因为我们对 Koa 更熟悉
+
 又比如 akajs 暂时只支持 mongodb，因为我们公司业务 mongodb 就足够支撑了。
 
 akajs 并不适合拿来开箱即用，但是它可以给你一个参考
@@ -53,7 +55,7 @@ akajs 使用注解式路由，是为了方便通过注解给路由注入更丰�
 ## IOC 依赖注入
 IOC 可以帮助我们实现功能解耦，不过这个要业务比较复杂的时候才需要，项目简单的时候 IOC 也可以作为单例的一种实现方式
 
-IOC 通过 inversify 这个库实现
+IOC 通过 [inversify](https://github.com/inversify/InversifyJS) 这个库实现
 
 ```ts
 export class WechatController {
@@ -73,14 +75,15 @@ export class WechatController {
 ```ts
 container.bind<IProxy>(TYPES.BaseProxyImp).to(APoxy)
 ```
-后期如果我们要更换 Proxy 的实现为 BProxy，只要保证 BProxy 能实现 IProxy 接口，我们之间在容器配置中更新配置为
+后期如果我们要更换 Proxy 的实现为 BProxy，只要保证 BProxy 能实现 IProxy 接口，我们直接在容器配置中更新配置为
 
 ```ts
 container.bind<IProxy>(TYPES.BaseProxyImp).to(BPoxy)
 ```
 
-这个就是解耦，也是控制反转（Inversion of Control，缩写为IoC）的名字由来。
-控制是指 WechatController 和 Proxy 之间的关系，在没有 IOC 之前，我们是通过编码来定义他们之间的关系的。
+这个就是为什么 IOC 能实现解耦，也是控制反转（Inversion of Control，缩写为IoC）的名字由来。
+
+控制是指 WechatController 和 Proxy 之间的引用关系，在没有 IOC 之前，我们是通过编码来定义他们之间的关系的。
 一般是这样：
 ```ts
 export class WechatController {
@@ -91,16 +94,16 @@ export class WechatController {
    }
  }
 ```
-也就是说，这段代码包含了业务逻辑和组件之间的关系两种内容。当代码量上去之后，关系和业务逻辑交织在一起，后面要改动其中某个关系就要打动干戈了。
+也就是说，这段代码包含了业务逻辑和组件之间的引用关系两种内容。当代码量上去之后，关系和业务逻辑交织在一起，后面要改动其中某个关系就要打动干戈了，你可能要修改多处代码，还可能改错和改漏。
 
-IOC 的目的就是把组件关系从代码里抽出来，由配置文件来定义，修改关系之间通过修改配置文件即可。
+IOC 的目的就是把组件关系从代码里抽出来，由配置文件来定义，修改引用关系直接通过修改配置文件即可实现。
 
 ## 参数和返回值处理
 
 ### 请求参数处理
 接口参数校验是后端经常要处理的问题，akajs 提供 DTO（数据传输对象) 帮你处理校验
 
-定义一个 DTO
+定义一个 DTO 对象，用注解的方式声明对象里各个参数的校验规则, 更详细的校验规则参考 [class-validator](https://github.com/typestack/class-validator)
 ```ts
 import {Length} from 'class-validator'
 
@@ -124,8 +127,7 @@ export class UserController {
   }
 }
 ```
-@DTO 会尝试在 ctx 找到所有参数，并初始化为 RegisterDto 对象。
-并且会进行校验，校验功能通过 'class-validator' 这个库实现
+@DTO 会尝试在 ctx 找到所有参数，并初始化为 RegisterDto 对象 dto, 并且会进行校验.
 
 如果不使用 DTO，akajs 则会把 query 和 body 参数都打包到 ctx.parametes 中, 你可以自行处理
 
@@ -133,7 +135,7 @@ export class UserController {
 @Controller('/user')
 export class UserController {
   @Post('/register')
-  async register (ctx: Context) dto) {
+  async register (ctx: Context) {
        log('parametes', ctx.parametes)
   }
 }
@@ -157,6 +159,22 @@ code = 1 代表发生了错误，当然你也可以定义自己的一套 code，
 ```ts
 import {IBaseMongoModel, MongoModel} from '@akajs/mongoose'
 
+export interface IUser {
+  phone: string
+  name: string
+}
+
+export interface IUserModel extends IUser, Document {
+  // registerSuccess (): IUserModelModel
+}
+
+export type UserModel = Model<IUserModel>
+
+const schema: Schema = new Schema({
+  phone: {type: String, index: true},
+  name: {type: String}
+})
+
 @MongoModel(Symbol.for('UserModel'))
 export class User implements IBaseMongoModel {
   modelName = 'User'
@@ -166,7 +184,17 @@ export class User implements IBaseMongoModel {
 ```
 
 程序初始化的时候会初始化 mongoose 连接并注入 model 到容器中。
-然后可以在 Controller 里使用 mongoose model。
+
+此外，你还可以定义 UserModel 的类型，这样 typescript 才可以帮你做类型校验和代码提示。
+
+当然，这些写法的坏处是每个属性都要在 Schema 和 Interface 定义，有点写两遍代码的意思。
+
+所以社区有一个库 [typegoose](https://github.com/szokodiakos/typegoose), 直接把 Class 和 Schema 合二为一。
+
+目前我个人不推荐使用这个库，还不太成熟，为了少写一部分代码，你需要学习新的写法+承受未知的BUG。
+
+
+在 Controller 里使用 mongoose model。
 
 ```ts
 @CrudController('/user')
