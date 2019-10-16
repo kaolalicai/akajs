@@ -1,6 +1,6 @@
 {
   "name": "@akajs/utils",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "aka utils",
   "main": "index.js",
   "scripts": {
