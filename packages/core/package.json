@@ -1,6 +1,6 @@
 {
   "name": "@akajs/core",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "aka core",
   "scripts": {
     "test": "npm run test"
@@ -11,7 +11,7 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/utils": "^0.0.7",
+    "@akajs/utils": "^0.0.8",
     "@types/koa": "^2.0.50",
     "class-validator": "^0.10.1",
     "inversify": "^5.0.1",
