@@ -187,14 +187,12 @@ export class User implements IBaseMongoModel {
 
 此外，你还可以定义 UserModel 的类型，这样 typescript 才可以帮你做类型校验和代码提示。
 
-当然，这些写法的坏处是每个属性都要在 Schema 和 Interface 定义，有点写两遍代码的意思。
-
-所以社区有一个库 [typegoose](https://github.com/szokodiakos/typegoose), 直接把 Class 和 Schema 合二为一。
-
-目前我个人不推荐使用这个库，还不太成熟，为了少写一部分代码，你需要学习新的写法+承受未知的BUG。
+> 当然，这些写法的坏处是每个属性都要在 Schema 和 Interface 定义，有点写两遍代码的意思。
+> 所以社区有一个库 [typegoose](https://github.com/szokodiakos/typegoose), 直接把 Class 和 Schema 合二为一。
+> 目前我个人不推荐使用这个库，还不太成熟，为了少写一部分代码，你需要学习新的写法+承受未知的BUG。
 
 
-在 Controller 里使用 mongoose model。
+定义好了 Model，就可以在 Controller 里使用了。
 
 ```ts
 @CrudController('/user')
@@ -208,6 +206,8 @@ export class UserController {
   }
 }
 ```
+
+**注意**：这里实际注入的并不是 User 这个Class的实例，而是 mongoose 注册的 model。
 
 ## CRUD
 通过 CrudController 注解一键生成增查删改接口，restful 风格
@@ -285,10 +285,10 @@ module.exports = [
 
 ### 测试辅助工具
 
-sinon ：function mock
-nock : http mock
-timekeeper : time mock
-chai.expect : 断言
+- sinon ：function mock
+- nock : http mock
+- timekeeper : time mock
+- chai.expect : 断言
 
 ## TODO
 接下来 akajs 还要集成以下常用工具
