@@ -228,12 +228,14 @@ export class UserController {
 - Logger ： logger 工具，包含logger代码位置
 - AppError ：自定义错误对象，有 error code
 
+使用样例
+
 ```ts
-import {logger} from '@akajs/utils'
+import {logger,DateUtil} from '@akajs/utils'
 
 logger.debug('hello', name)
 // 两天后
-    DateUtil.getDayStart(null, 2)
+DateUtil.getDayStart(null, 2)
 ```
 
 ## API 接口文档
