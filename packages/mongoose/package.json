@@ -1,6 +1,6 @@
 {
   "name": "@akajs/mongoose",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "aka mongoose",
   "scripts": {
     "test": "npm run test"
@@ -11,8 +11,8 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/core": "^0.0.8",
-    "@akajs/utils": "^0.0.8",
+    "@akajs/core": "^0.0.9",
+    "@akajs/utils": "^0.0.9",
     "@types/mongoose": "^5.5.20",
     "config": "^3.2.3",
     "lodash": "^4.17.15",
