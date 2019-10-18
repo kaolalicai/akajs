@@ -7,17 +7,18 @@ akajs 是为 Kalengo 定制的。
 
 又比如 akajs 暂时只支持 mongodb，因为我们公司业务 mongodb 就足够支撑了。
 
-akajs 并不适合拿来开箱即用，但是它可以给你一个参考
+akajs 并不适合所有项目，但是它可以给你一个参考
 - 如何包装 mongoose
 - 如何校验参数和处理全局异常
 - 如何集成 IOC
 - 如何做集成测试
 等等
 
+akajs 会参考 NestJs 和 Egg.js 两个框架的设计
 
 ## QuickStart
 
-可以直接使用我们的 klg-init 工具来初始化我们的项目，如果没有 klg-init, 请先安装
+可以直接使用我们的 klg-init 工具来初始化项目，如果没有 klg-init, 请先安装
 
 `npm i klg-init -g`
 
@@ -26,6 +27,37 @@ akajs 并不适合拿来开箱即用，但是它可以给你一个参考
 `klg-init <dir>`
 
 选择"Typescript 后端项目模板"即可
+
+## 模块化
+在项目变复杂的时候，进行模块划分降低复杂度的有效方法。
+在之前一些项目中，我通过文件夹隔离的方式来实现模块化
+```
+src
+    user
+        controller
+        service
+        index.ts
+        modules.ts
+    order
+        controller
+        service
+        index.ts
+        modules.ts
+```
+每个模块都有自己的 mvc，使用 index.ts 来向外暴露方法，使用 modules.ts 来声明引入其他模块
+在 order 模块里使用 user 模块就像这样：
+
+```ts
+import {userModule} from '../modules'
+
+await userMoudle.findUser()
+
+```
+这个方式足够简单，但是需要开发自觉维护规范。
+
+而 NestJs 则提供了 Module 的注解，来强制定义模块，也是不错的方法。
+
+**不过在云原生时代，有了 k8s 的辅助，最好还是不要做模块化了，拆成多个服务吧，服务足够小的情况下，分工和技术升级会简单很多**
 
 ## 注解式路由
 
@@ -187,14 +219,12 @@ export class User implements IBaseMongoModel {
 
 此外，你还可以定义 UserModel 的类型，这样 typescript 才可以帮你做类型校验和代码提示。
 
-当然，这些写法的坏处是每个属性都要在 Schema 和 Interface 定义，有点写两遍代码的意思。
-
-所以社区有一个库 [typegoose](https://github.com/szokodiakos/typegoose), 直接把 Class 和 Schema 合二为一。
-
-目前我个人不推荐使用这个库，还不太成熟，为了少写一部分代码，你需要学习新的写法+承受未知的BUG。
+> 当然，这些写法的坏处是每个属性都要在 Schema 和 Interface 定义，有点写两遍代码的意思。
+> 所以社区有一个库 [typegoose](https://github.com/szokodiakos/typegoose), 直接把 Class 和 Schema 合二为一。
+> 目前我个人不推荐使用这个库，还不太成熟，为了少写一部分代码，你需要学习新的写法+承受未知的BUG。
 
 
-在 Controller 里使用 mongoose model。
+定义好了 Model，就可以在 Controller 里使用了。
 
 ```ts
 @CrudController('/user')
@@ -208,6 +238,8 @@ export class UserController {
   }
 }
 ```
+
+**注意**：这里实际注入的并不是 User 这个Class的实例，而是 mongoose 注册的 model。
 
 ## CRUD
 通过 CrudController 注解一键生成增查删改接口，restful 风格
@@ -227,6 +259,16 @@ export class UserController {
 - NumUtil ： 主要处理 0.1 + 0.2 = 0.30000000000000004 问题
 - Logger ： logger 工具，包含logger代码位置
 - AppError ：自定义错误对象，有 error code
+
+使用样例
+
+```ts
+import {logger,DateUtil} from '@akajs/utils'
+
+logger.debug('hello', name)
+// 两天后
+DateUtil.getDayStart(null, 2)
+```
 
 ## API 接口文档
 akajs 的期望是，可以根据代码自动生成接口文档，但是这里还有些技术 block，typescript 的 ast 读取还是有些麻烦，需要些时间。
@@ -285,10 +327,10 @@ module.exports = [
 
 ### 测试辅助工具
 
-sinon ：function mock
-nock : http mock
-timekeeper : time mock
-chai.expect : 断言
+- sinon ：function mock
+- nock : http mock
+- timekeeper : time mock
+- chai.expect : 断言
 
 ## TODO
 接下来 akajs 还要集成以下常用工具
