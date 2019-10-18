@@ -17,7 +17,7 @@ const schema: Schema = new Schema({
   name: {type: String}
 })
 
-@MongoModel(Symbol.for('UserModel'))
+@MongoModel('UserModel')
 export class User implements IBaseMongoModel {
   modelName = 'User'
   schema = schema

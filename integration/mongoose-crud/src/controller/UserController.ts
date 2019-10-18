@@ -5,7 +5,7 @@ import {UserModel} from '../model'
 @CrudController('/user')
 export class UserController implements ICurdController {
 
-  @Inject(Symbol.for('UserModel'))
+  @Inject('UserModel')
   public crudModel: UserModel
 
   @Get('/hello/:name')
