@@ -31,14 +31,30 @@ export class MongooseConnection {
   init () {
     let mongoConfigs = null
     try {
-      mongoConfigs = config.get('mongodb.connections')
+      // 兼容旧结构
+      if (config.has('database.mongodb')) {
+        mongoConfigs = config.get('database.mongodb')
+      } else {
+        mongoConfigs = config.get('mongodb.connections')
+      }
     } catch (e) {
       throw new Error('mongodb config 不能为空')
     }
     if (_.isEmpty(mongoConfigs)) throw new Error('mongodb config 不能为空')
 
-    const DEBUG_FLAG = config.get('mongodb.debug')
-    mongoose.set('debug', DEBUG_FLAG)
+    try {
+      let DEBUG_FLAG = false
+      // 兼容旧结构
+      if (config.has('database.mongoDebug')) {
+        DEBUG_FLAG = config.get('database.mongoDebug')
+      }
+      if (config.has('mongodb.debug')) {
+        DEBUG_FLAG = config.get('mongodb.debug')
+      }
+      mongoose.set('debug', DEBUG_FLAG)
+    } catch (e) {
+      throw new Error('mongodb debug config 不正确')
+    }
 
     for (let c of mongoConfigs) {
       const con = this.createConnection(c.url, c.options)

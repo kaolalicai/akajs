@@ -16,42 +16,69 @@ import {httpServe} from './interfaces/http'
 export const routerPrefix = '/api/v1'
 
 export class Application {
-  private app
-  private server
-
-  constructor (config: httpServe.IKoaConfig) {
-    this.createServe(config)
+  get router () {
+    return this._router
   }
 
-  createServe (config: httpServe.IKoaConfig) {
-    this.app = new Koa()
+  set router (value) {
+    this._router = value
+  }
+
+  get app () {
+    return this._app
+  }
+
+  set app (value) {
+    this._app = value
+  }
+
+  private _app
+  private _router
+  private server
+  private _config: httpServe.IKoaConfig
+
+  constructor (config: httpServe.IKoaConfig) {
+    this._config = config
+    this.createServer()
+  }
+
+  buildPlugin () {
+    this._app = this._config.existsKoa || new Koa()
     // middleware
-    this.app.use(bodyParser())
-    this.app.use(morgan('tiny', {
+    this._app.use(bodyParser())
+    this._app.use(morgan('tiny', {
       skip: function (req, res) {
         return /\/docs\//.exec(req.url) || /\/healthcheck\//.exec(req.url)
       }
     }))
 
     // response format and  error handle
-    this.app.use(responseFormatter('^/api'))
+    this._app.use(responseFormatter('^/api'))
 
     // 将所有参数注册到 ctx.parameters
-    this.app.use(parameters)
+    this._app.use(parameters)
 
     // statics
-    this.app.use(koaStatic('assets'))
+    this._app.use(koaStatic('assets'))
+  }
 
+  buildRouters () {
+    this._router = this._config.router || new Router({prefix: routerPrefix})
     // routers
-    const router = new Router({prefix: routerPrefix})
-    buildRouters(container, router)
-    this.app.use(router.routes())
-    this.app.use(router.allowedMethods())
-    return this.app
+    buildRouters(container, this._router)
+    this._app.use(this._router.routes())
+    this._app.use(this._router.allowedMethods())
+  }
+
+  createServer () {
+    this.buildPlugin()
+    // routers
+    this.buildRouters()
+    return this._app
   }
 
   getHttpServer () {
-    this.server = http.createServer(this.app.callback())
+    this.server = http.createServer(this._app.callback())
     return this.server
   }
 

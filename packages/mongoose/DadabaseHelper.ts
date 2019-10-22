@@ -7,6 +7,14 @@ export function getConnections () {
   return dbs.values()
 }
 
+export function getModels () {
+  let models = {}
+  for (let db of dbs.values()) {
+    Object.assign(models, db.models)
+  }
+  return models
+}
+
 export function getModel (str) {
   let model = null
   for (let db of dbs.values()) {

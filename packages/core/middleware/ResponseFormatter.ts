@@ -41,6 +41,7 @@ export function responseFormatter (pattern) {
 
     function responseFormatter (ctx) {
       if (ctx.type === 'text/html') return
+      if (ctx.type === 'text/html') return
       const body = ctx.body
       ctx.status = ctx.status || 200
       if (ctx.status === 204) ctx.status = 200

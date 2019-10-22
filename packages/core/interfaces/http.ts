@@ -34,6 +34,8 @@ namespace router {
 
 namespace httpServe {
   export interface IKoaConfig {
+    existsKoa?: any
+    router?: any
     formatResponse?: boolean
     bodyParser?: boolean
   }
