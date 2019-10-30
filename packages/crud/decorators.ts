@@ -1,5 +1,5 @@
 import {Context} from 'koa'
-import {assign} from 'lodash'
+import {assign, cloneDeep} from 'lodash'
 import {addRouterMetadata, Controller} from '@akajs/core'
 import {decorate} from 'inversify'
 import {ICurdController} from './crudController'
@@ -17,8 +17,21 @@ export function CrudController<T extends ICurdController> (path?: string) {
     // 注册路由
     constructor.prototype.findAll = constructor.prototype.findAll || async function findAll (this: ICurdController, ctx: Context, parameters) {
       checkModel(this.crudModel)
-      ctx.body = await this.crudModel.find(parameters)
+      let {page, limit} = parameters
+      page = page || 0
+      limit = limit || 30
+      const query = cloneDeep(parameters)
+      delete query.limit
+      delete query.page
+      if (parameters.page || parameters.limit) {
+        const list = await this.crudModel.find(query).skip(page * limit).limit(limit)
+        const totalCount = await this.crudModel.count(query)
+        ctx.body = {list, totalCount}
+      } else {
+        ctx.body = await this.crudModel.find(query).limit(limit)
+      }
     }
+
     addRouterMetadata({
       key: 'findAll',
       method: 'get',

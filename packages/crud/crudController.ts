@@ -11,6 +11,8 @@ export interface ICrudDocument {
 
   find (conditions: any)
 
+  count (conditions: any)
+
   remove (conditions: any)
 }
 

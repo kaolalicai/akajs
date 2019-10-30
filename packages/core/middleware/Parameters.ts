@@ -1,5 +1,5 @@
 import {Context} from 'koa'
-import {cloneDeep} from 'lodash'
+import {cloneDeep, toNumber} from 'lodash'
 
 /**
  * 声明 ctx.parameters
@@ -17,8 +17,12 @@ export async function parameters (ctx: Context, next) {
   const parameters = cloneDeep(ctx.request.body) || {}
   Object.assign(parameters, ctx.request.query)
 
-  if (parameters.page && !isNaN(parseInt(ctx.parameters.page))) Object.assign(parameters, {page: parseInt(ctx.parameters.page)})
-  if (parameters.limit && !isNaN(parseInt(ctx.parameters.limit))) Object.assign(parameters, {limit: parseInt(ctx.parameters.limit)})
+  try {
+    if (parameters.page) parameters.page = toNumber(parameters.page)
+    if (parameters.limit) parameters.limit = toNumber(parameters.limit)
+  } catch (error) {
+    throw new Error('参数转换错误：' + error.message)
+  }
   ctx.parameters = parameters
   await next()
 }
