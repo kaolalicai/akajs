@@ -253,6 +253,8 @@ export class UserController {
 }
 ```
 
+查询接口支持分页，详细见测试 integration/mongoose-crud/e2e/user.page.spec.ts
+
 ## 常用工具
 @akajs/utils 收集了 Kalengo 后端开发常用的工具类，目前有
 - DateUtil ：日期计算，节假日
