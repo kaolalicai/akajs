@@ -84,6 +84,11 @@ export class UserController {
 
 akajs 使用注解式路由，是为了方便通过注解给路由注入更丰富的功能。
 
+如果要自定义中间件 middleware 请参考
+- integration/hwllo-world/e2e/middleware.spec.ts
+- integration/hwllo-world/src/controller/MiddlewareController.ts
+这个示例
+
 ## IOC 依赖注入
 IOC 可以帮助我们实现功能解耦，不过这个要业务比较复杂的时候才需要，项目简单的时候 IOC 也可以作为单例的一种实现方式
 
