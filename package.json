@@ -48,7 +48,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "lodash": "^4.17.15",
-    "mongoose": "^5.7.3",
+    "mongoose": "^5.7.5",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
