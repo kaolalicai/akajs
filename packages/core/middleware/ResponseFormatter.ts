@@ -1,4 +1,5 @@
 import * as _ from 'lodash'
+import {ValidationError} from 'class-validator'
 import {AppError, logger} from '../../utils'
 
 export function responseFormatter (pattern) {
@@ -25,6 +26,14 @@ export function responseFormatter (pattern) {
         ctx.status = 200
         ctx.body = {
           code: -1,
+          message: msg
+        }
+        return
+      } else if (_.isArray(error) && error[0] instanceof ValidationError) {
+        const key = Object.keys(error[0].constraints)[0]
+        const msg = error[0].constraints[key]
+        ctx.body = {
+          code: 1,
           message: msg
         }
         return
