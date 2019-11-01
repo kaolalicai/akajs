@@ -1,6 +1,12 @@
-import {Controller, Get, Inject} from '@akajs/core'
+import {Controller, Get, Inject, DTO,Post} from '@akajs/core'
 import {logger} from '@akajs/utils'
 import {UserService} from '../service/UserService'
+import {MinLength} from 'class-validator'
+
+class UserDto {
+  @MinLength(1,{message: 'name can not be empty'})
+  name: string
+}
 
 @Controller('/user')
 export class UserController {
@@ -13,5 +19,10 @@ export class UserController {
     const {name} = ctx.params
     logger.debug('hello', name)
     ctx.body = await this.userService.hello(name)
+  }
+
+  @Post('/testDto')
+  async save (ctx, @DTO(UserDto) {name}) {
+    ctx.body = 'success'
   }
 }
