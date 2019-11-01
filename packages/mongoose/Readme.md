@@ -212,7 +212,7 @@ const schema: Schema = new Schema({
   name: {type: String}
 })
 
-@MongoModel(Symbol.for('UserModel'))
+@MongoModel('UserModel')
 export class User implements IBaseMongoModel {
   modelName = 'User'
   schema = schema
@@ -235,7 +235,7 @@ export class User implements IBaseMongoModel {
 @CrudController('/user')
 export class UserController {
 
-  @inject(TYPES.UserModel)
+  @inject('UserModel')
   private crudModel: UserModel
 
   async hello(){
@@ -263,8 +263,8 @@ export class UserController {
 ## 常用工具
 @akajs/utils 收集了 Kalengo 后端开发常用的工具类，目前有
 - DateUtil ：日期计算，节假日
-- NumUtil ： 主要处理 0.1 + 0.2 = 0.30000000000000004 问题
-- Logger ： logger 工具，包含logger代码位置
+- NumberUtil ： 主要处理 0.1 + 0.2 = 0.30000000000000004 问题
+- Logger ： logger 工具，可以显示logger所在代码位置
 - AppError ：自定义错误对象，有 error code
 
 使用样例
@@ -312,7 +312,7 @@ akajs 默认支持集成测试，以接口为单位，当然你要写单元测�
 
 `user.crud.data.ts`
 
-内容大概这样：
+内容长这样：
 ```ts
 module.exports = [
   {
