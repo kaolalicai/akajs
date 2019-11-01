@@ -1,6 +1,6 @@
 {
   "name": "@akajs/crud",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "aka crud",
   "scripts": {
     "test": "npm run test"
@@ -11,8 +11,8 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/core": "^0.1.1",
-    "@akajs/utils": "^0.1.0",
+    "@akajs/core": "^0.1.2",
+    "@akajs/utils": "^0.1.2",
     "config": "^3.2.3",
     "lodash": "^4.17.15"
   },
