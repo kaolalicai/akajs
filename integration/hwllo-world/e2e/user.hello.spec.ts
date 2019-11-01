@@ -20,6 +20,17 @@ describe('Hello world ', () => {
       })
   })
 
+  it(`should return error message`,() => {
+    return request(server)
+        .post(routerPrefix + '/user/testDto')
+        .send({name: ''})
+        .expect(200)
+        .expect({
+          code: 1,
+          message: 'name can not be empty'
+        })
+  })
+
   afterEach(async () => {
     await app.close()
   })
