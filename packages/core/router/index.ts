@@ -5,3 +5,5 @@ export function buildRouters (myContainer: Container, router) {
   let server = new RouterBuilder(myContainer, router)
   server.build()
 }
+
+export * from './HealthCheckRouter'

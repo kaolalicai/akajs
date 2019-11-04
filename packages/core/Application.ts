@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import {buildRouters} from './router'
+import {buildRouters,HealthCheckRouter} from './router'
 import * as config from 'config'
 import * as http from 'http'
 import {logger} from '@akajs/utils'
@@ -64,6 +64,8 @@ export class Application {
     this._router = this._config.router || new Router({prefix: routerPrefix})
     // routers
     buildRouters(container, this._router)
+    this._app.use(HealthCheckRouter.routes())
+    this._app.use(HealthCheckRouter.allowedMethods())
     this._app.use(this._router.routes())
     this._app.use(this._router.allowedMethods())
   }
