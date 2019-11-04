@@ -56,7 +56,7 @@ export class Application {
     if (this._config.formatResponse !== false) this._app.use(responseFormatter('^/api'))
 
     // 将所有参数注册到 ctx.parameters
-    if (this._config.generateParameters !== false) this._app.use(parameters)
+    if (this._config.assembleParameters !== false) this._app.use(parameters)
 
     // statics
     this._app.use(koaStatic('assets'))
