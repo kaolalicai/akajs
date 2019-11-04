@@ -1,11 +1,11 @@
 import 'reflect-metadata'
-import {buildRouters} from './router'
+import {buildRouters,HealthCheckRouter} from './router'
 import * as config from 'config'
 import * as http from 'http'
 import {logger} from '@akajs/utils'
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
-import * as morgan from 'koa-morgan'
+import * as koaLogger from 'koa-logger'
 import * as Router from 'koa-router'
 import * as koaStatic from 'koa-static'
 import {responseFormatter} from './middleware/ResponseFormatter'
@@ -46,12 +46,10 @@ export class Application {
     this._app = this._config.existsKoa || new Koa()
     // middleware
     if (this._config.bodyParser !== false) this._app.use(bodyParser())
-    this._app.use(morgan('tiny', {
-      skip: function (req, res) {
-        return /\/docs\//.exec(req.url) || /\/healthcheck\//.exec(req.url)
-      }
+    this._app.use(koaLogger((str,args) => {
+      if (str.includes('healthcheck')) return
+      logger.info(str)
     }))
-
     // response format and  error handle
     if (this._config.formatResponse !== false) this._app.use(responseFormatter('^/api'))
 
@@ -66,6 +64,8 @@ export class Application {
     this._router = this._config.router || new Router({prefix: routerPrefix})
     // routers
     buildRouters(container, this._router)
+    this._app.use(HealthCheckRouter.routes())
+    this._app.use(HealthCheckRouter.allowedMethods())
     this._app.use(this._router.routes())
     this._app.use(this._router.allowedMethods())
   }
