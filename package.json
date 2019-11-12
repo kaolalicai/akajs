@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "types": "src/index.ts",
   "scripts": {
-    "lint": "tslint -p tsconfig.json -c tslint.json \"packages/**/*.ts\" -e \"*.spec.ts\"",
+    "lint": "tslint -p tsconfig.json -c tslint.json \"packages/**/*.ts\" -e \"*.spec.ts\" --fix",
     "clean": "gulp clean:bundle",
     "prebuild": "rm -rf node_modules/@akajs",
     "build": "gulp build --dist node_modules/@akajs",
