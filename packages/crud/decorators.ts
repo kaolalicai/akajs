@@ -1,8 +1,9 @@
 import {Context} from 'koa'
-import {assign, cloneDeep} from 'lodash'
+import {assign} from 'lodash'
 import {addRouterMetadata, Controller} from '@akajs/core'
 import {decorate} from 'inversify'
 import {ICurdController} from './crudController'
+import {parseApiToQuery} from './resetApiUtil'
 
 function checkModel (model) {
   if (!model) throw new Error('CRUD Controller 必须定义 crudModel')
@@ -17,18 +18,13 @@ export function CrudController<T extends ICurdController> (path?: string) {
     // 注册路由
     constructor.prototype.findAll = constructor.prototype.findAll || async function findAll (this: ICurdController, ctx: Context, parameters) {
       checkModel(this.crudModel)
-      let {page, limit} = parameters
-      page = page || 0
-      limit = limit || 30
-      const query = cloneDeep(parameters)
-      delete query.limit
-      delete query.page
-      if (parameters.page || parameters.limit) {
-        const list = await this.crudModel.find(query).skip(page * limit).limit(limit)
+      const {skip, limit, query, selectors, sorter} = parseApiToQuery(parameters)
+      const list = await this.crudModel.find(query).skip(skip).limit(limit).select(selectors).sort(sorter)
+      if (parameters.page) {
         const totalCount = await this.crudModel.count(query)
         ctx.body = {list, totalCount}
       } else {
-        ctx.body = await this.crudModel.find(query).limit(limit)
+        ctx.body = list
       }
     }
 

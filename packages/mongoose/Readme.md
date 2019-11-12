@@ -258,7 +258,69 @@ export class UserController {
 }
 ```
 
+CrudController 会在 UserController的 prototype 注入4个方法，你也可以重写这些方法。
+
+### create
+```
+POST /:model
+```
+在 body 传入 json 格式的 model 即可
+### findAll
+```
+GET /:model
+```
 查询接口支持分页，详细见测试 integration/mongoose-crud/e2e/user.page.spec.ts
+详细的查询参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| model | String | model 名字 |
+| _*_ | String? | 简易的过滤参数，e.g. GET /purchase?amount=99.99 |
+| where | String? | json 格式的 mongoose 查询条件，e.g. ?where={"name" : {"$eq" : "hello"}} |
+| limit | Number? | 单页记录数 e.g. ?limit=100 |
+| page | Number? | 页码 e.g. ?page=1 |
+| sort | Number? | 排序，目前只支持单字段排序 e.g. ?sort=lastName%20ASC |
+| select | Number? | 挑选字段，逗号分隔 e.g. ?select=name,age |
+| omit | Number? | 不返回字段，逗号分隔 e.g. ?select=omit |
+
+
+注意，当传入 page 参数是，返回体格式是：
+```js
+{
+    code : 0
+    body : {
+        list : [items]
+        totalCount : 30
+    }
+}
+```
+默认则是
+```js
+{
+    code : 0
+    body : [items]
+}
+```
+
+### findOne
+```
+GET /:model/:id
+```
+查询单条记录
+
+### updateOne
+```
+PUT /:model/:id
+```
+在 body 传入 json 格式的 model 即可
+
+### remove
+```
+DELETE /:model/:id
+```
+
+
+
 
 ## 常用工具
 @akajs/utils 收集了 Kalengo 后端开发常用的工具类，目前有

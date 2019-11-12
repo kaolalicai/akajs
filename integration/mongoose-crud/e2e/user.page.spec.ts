@@ -5,15 +5,16 @@ describe('user.page.spec 分页测试', () => {
   const user = {
     'userId': '5b03b80c9b6c6043c138d1b6',
     'phone': '12399874488',
-    'name': 'today'
+    'name': 'today',
+    'count': 0
   }
 
   const totalCount = 40
 
   it(' create ', async () => {
-    const userIds = new Array(totalCount).fill(0).map((value, index) => index)
-    for (let ud of userIds) {
-      user.userId = '5b03b80c9b6c6043c138d1b6' + ud
+    const nums = new Array(totalCount).fill(0).map((value, index) => index)
+    for (let no of nums) {
+      user.count = no
       const res1 = await request.post(prefix + `/user`)
         .send(user)
         .expect(200)
@@ -46,6 +47,20 @@ describe('user.page.spec 分页测试', () => {
       .expect(200)
     console.log('res1', res1.body)
     expect(res1.body.data.list).lengthOf(0)
+  })
+
+  it(' 排序 ', async () => {
+    const res1 = await request.get(prefix + `/user/`).query({sort: 'count DESC', limit: 1})
+      .expect(200)
+    console.log('res1', res1.body)
+    expect(res1.body.data).lengthOf(1)
+    expect(res1.body.data[0].count).eq(39)
+
+    const res2 = await request.get(prefix + `/user/`).query({sort: 'count ASC', limit: 1})
+      .expect(200)
+    console.log('res2', res2.body)
+    expect(res2.body.data).lengthOf(1)
+    expect(res2.body.data[0].count).eq(0)
   })
 
 })
