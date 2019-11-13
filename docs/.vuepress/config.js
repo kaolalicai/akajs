@@ -5,13 +5,13 @@ module.exports = {
   themeConfig: {
     nav: [
       {text: '首页', link: '/'},
-      {text: '指南', link: '/core'},
+      {text: '指南', link: '/guide'},
       {text: 'Github', link: 'https://github.com/kaolalicai/akajs'},
     ],
     sidebar: [
       '/',
       ['/quickstart', '快速开始'],
-      ['/core', '指南']
+      ['/guide', '指南']
     ]
   }
 }

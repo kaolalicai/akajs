@@ -3,7 +3,7 @@ home: true
 heroText: akajs
 tagline: Kalengo Node 后端 web 项目工具集
 actionText: 快速上手 →
-actionLink: /quickstart/
+actionLink: /guide/
 features:
   - title: Kalengo 定制
     details: akajs 并不是一个Web框架，它是 Kalengo 的一堆 Node.js 的后端开发实践，其目的是把这些开发实践变成一个包，方便开发快速搭建一个后端服务。
