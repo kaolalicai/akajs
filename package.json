@@ -18,7 +18,9 @@
     "publish:rc": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --registry https://registry.npmjs.org --npm-tag=rc",
     "publish:next": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --registry https://registry.npmjs.org --npm-tag=next --skip-git",
     "publish:beta": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --registry https://registry.npmjs.org --npm-tag=beta",
-    "publish:test": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --registry https://registry.npmjs.org --npm-tag=test --skip-git"
+    "publish:test": "npm run prerelease && npm run build:prod && ./node_modules/.bin/lerna publish --registry https://registry.npmjs.org --npm-tag=test --skip-git",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "repository": {
     "type": "git",
@@ -73,6 +75,7 @@
     "tslint": "^5.20.0",
     "tslint-config-klg": "^2.0.0",
     "typescript": "^3.6.3",
+    "vuepress": "^1.2.0",
     "webstorm-disable-index": "^1.2.0"
   }
 }
