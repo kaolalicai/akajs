@@ -349,6 +349,24 @@ DELETE /:model/:id
 ```
 
 
+## 健康检查
+通过接口获取/修改服务状态
+
+### 获取服务器状态
+通过请求HTTP状态码判断，200:正常 503:服务状态异常
+```
+GET /healthcheck/check
+```
+
+### 修改服务器状
+设置状态为异常
+```
+GET /healthcheck/status/reset?status=false
+```
+设置状态为正常
+```
+GET /healthcheck/status/reset?status=true
+```
 
 
 ## 常用工具
