@@ -1,9 +1,15 @@
 import {Controller, Get, Inject, DTO,Post} from '@akajs/core'
 import {logger} from '@akajs/utils'
 import {UserService} from '../service/UserService'
-import {MinLength} from 'class-validator'
+import {MinLength,Min,IsOptional,Max,MaxLength} from 'class-validator'
+import {PaginationDto} from '../dto'
 
 class UserDto {
+  @MinLength(1,{message: 'name can not be empty'})
+  name: string
+}
+
+class UserPagination extends PaginationDto {
   @MinLength(1,{message: 'name can not be empty'})
   name: string
 }
@@ -22,7 +28,17 @@ export class UserController {
   }
 
   @Post('/testDto')
-  async save (ctx, @DTO(UserDto) {name}) {
-    ctx.body = 'success'
+  async save (ctx, @DTO(UserPagination) {name}): Promise<{
+    obj: {
+      value: {
+        name: string
+        title: number
+        data: string[]
+      }
+    },
+    desc: string,
+    list: {num: number,msg: string}[]
+  }> {
+    return ctx.body = {obj: {value: {name: 'deo',title: 111,data: []}},desc: 'desc string',list: [{num: 1,msg: 'message'}]}
   }
 }

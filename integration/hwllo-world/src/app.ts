@@ -1,5 +1,5 @@
 import {Application} from '@akajs/core'
-
+import '../tsQueryTest'
 import './controller/MiddlewareController'
 import './controller/UserController'
 
