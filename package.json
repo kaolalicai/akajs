@@ -35,13 +35,12 @@
     "node": ">= 8.9.0"
   },
   "dependencies": {
-    "@types/koa-bodyparser": "^4.3.0",
-    "@types/lodash": "^4.14.139",
-    "@types/mongoose": "^5.5.18",
     "class-validator": "^0.10.1",
     "config": "^3.2.2",
+    "glob": "^7.1.6",
     "inversify": "^5.0.1",
     "inversify-binding-decorators": "^4.0.0",
+    "inversify-inject-decorators": "^3.1.0",
     "klg-date": "^1.1.5",
     "klg-logger": "^3.0.1",
     "klg-number": "^1.0.7",
@@ -54,8 +53,10 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.2.0",
-    "@commitlint/config-conventional": "^8.2.0",
+    "@types/glob": "^7.1.1",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/lodash": "^4.14.139",
+    "@types/mongoose": "^5.5.18",
     "@types/koa": "^2.0.50",
     "@types/koa-router": "^7.0.42",
     "@types/mocha": "^5.2.7",

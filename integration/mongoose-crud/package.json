@@ -4,7 +4,8 @@
   "description": "akajs mongoose curd demo",
   "license": "MIT",
   "scripts": {
-    "test": "mocha \"e2e/*.spec.ts\" --reporter spec --require ts-node/register"
+    "test": "mocha \"e2e/*.spec.ts\" --reporter spec --require ts-node/register",
+    "dev": "ts-node src/main.ts"
   },
   "dependencies": {
     "@akajs/core": "0.0.1",

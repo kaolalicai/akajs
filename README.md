@@ -1,3 +1,6 @@
+
+[使用指南](https://kaolalicai.github.io/akajs_doc/)
+
 # 关于 akajs
 akajs 并不是一个Web框架，它是 Kalengo 的一堆 Node.js 的后端开发实践，其目的是把这些开发实践变成一个包，方便开发快速搭建一个后端服务。
 
@@ -39,4 +42,3 @@ $ npm run dev
 $ open http://localhost:3000
 ```
 
-[文档](https://kaolalicai.github.io/akajs_doc/)
