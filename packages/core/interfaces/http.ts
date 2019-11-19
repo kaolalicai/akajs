@@ -39,6 +39,7 @@ namespace httpServe {
     formatResponse?: boolean
     bodyParser?: boolean
     assembleParameters?: boolean
+    autoRequire?: boolean
   }
 }
 export {router, httpServe}

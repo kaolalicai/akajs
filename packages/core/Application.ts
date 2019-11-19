@@ -1,13 +1,15 @@
 import 'reflect-metadata'
-import {buildRouters,HealthCheckRouter} from './router'
 import * as config from 'config'
 import * as http from 'http'
-import {logger} from '@akajs/utils'
+import * as glob from 'glob'
+import * as path from 'path'
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
 import * as koaLogger from 'koa-logger'
 import * as Router from 'koa-router'
 import * as koaStatic from 'koa-static'
+import {logger} from '@akajs/utils'
+import {buildRouters, HealthCheckRouter} from './router'
 import {responseFormatter} from './middleware/ResponseFormatter'
 import {parameters} from './middleware/Parameters'
 import {container} from './cantainer'
@@ -46,7 +48,7 @@ export class Application {
     this._app = this._config.existsKoa || new Koa()
     // middleware
     if (this._config.bodyParser !== false) this._app.use(bodyParser())
-    this._app.use(koaLogger((str,args) => {
+    this._app.use(koaLogger((str, args) => {
       if (str.includes('healthcheck')) return
       logger.info(str)
     }))
@@ -70,8 +72,20 @@ export class Application {
     this._app.use(this._router.allowedMethods())
   }
 
+  requireControllers (controllers?: string) {
+    let files = glob.sync(controllers || 'src/controller/*.*')
+    for (let file of files) {
+      let name = file.replace('.ts', '')
+      logger.debug('scan controller file ', path.join(process.cwd(), name))
+      // logger.debug('scan file ', name)
+      require(path.resolve(path.join(process.cwd(), name)))
+    }
+  }
+
   createServer () {
     this.buildPlugin()
+    // auto require
+    if (this._config.autoRequire !== false) this.requireControllers()
     // routers
     this.buildRouters()
     return this._app
@@ -83,7 +97,10 @@ export class Application {
   }
 
   async close () {
+    logger.debug('server close')
     this.server.close()
+    logger.debug('container clear')
+    container.unbindAll()
   }
 
   async init () {

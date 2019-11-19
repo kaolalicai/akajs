@@ -3,7 +3,7 @@ import {routerPrefix, Application} from '@akajs/core'
 
 describe('config.spec 配置测试', () => {
   it('formatResponse false return ctx.body', async () => {
-    let app = new Application({formatResponse: false})
+    let app = new Application({formatResponse: false, autoRequire: false})
     app.app.use(async (ctx, next) => {
       ctx.body = 'success'
     })
@@ -17,7 +17,7 @@ describe('config.spec 配置测试', () => {
   })
 
   it('formatResponse true return to ctx.body.data', async () => {
-    let app = new Application({assembleParameters: true})
+    let app = new Application({assembleParameters: true, autoRequire: false})
     app.app.use(async (ctx, next) => {
       ctx.body = 'success'
     })
@@ -31,7 +31,7 @@ describe('config.spec 配置测试', () => {
   })
 
   it('assembleParameters false', async () => {
-    let app = new Application({assembleParameters: false, formatResponse: false})
+    let app = new Application({assembleParameters: false, formatResponse: false, autoRequire: false})
     app.app.use(async (ctx, next) => {
       ctx.body = {parameters: ctx.parameters}
     })
@@ -46,7 +46,7 @@ describe('config.spec 配置测试', () => {
   })
 
   it('assembleParameters true', async () => {
-    let app = new Application({assembleParameters: true, formatResponse: false})
+    let app = new Application({assembleParameters: true, formatResponse: false, autoRequire: false})
     app.app.use(async (ctx, next) => {
       ctx.body = {parameters: ctx.parameters}
     })
@@ -61,7 +61,7 @@ describe('config.spec 配置测试', () => {
   })
 
   it('bodyParser false', async () => {
-    let app = new Application({bodyParser: false, formatResponse: false})
+    let app = new Application({bodyParser: false, formatResponse: false, autoRequire: false})
     app.app.use(async (ctx, next) => {
       ctx.body = {requestBody: ctx.request.body}
     })
@@ -76,7 +76,7 @@ describe('config.spec 配置测试', () => {
   })
 
   it('bodyParser true', async () => {
-    let app = new Application({bodyParser: true, formatResponse: false})
+    let app = new Application({bodyParser: true, formatResponse: false, autoRequire: false})
     app.app.use(async (ctx, next) => {
       ctx.body = {requestBody: ctx.request.body}
     })
