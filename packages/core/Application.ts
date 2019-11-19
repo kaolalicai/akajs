@@ -72,8 +72,8 @@ export class Application {
     this._app.use(this._router.allowedMethods())
   }
 
-  requireControllers (controllers?: string) {
-    let files = glob.sync(controllers || 'src/controller/*.*')
+  requireControllers () {
+    let files = glob.sync(this._config.controllersPath || 'src/controller/*.*')
     for (let file of files) {
       let name = file.replace('.ts', '')
       logger.debug('scan controller file ', path.join(process.cwd(), name))

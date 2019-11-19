@@ -40,6 +40,7 @@ namespace httpServe {
     bodyParser?: boolean
     assembleParameters?: boolean
     autoRequire?: boolean
+    controllersPath?: string
   }
 }
 export {router, httpServe}
