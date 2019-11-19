@@ -37,7 +37,54 @@ await userMoudle.findUser()
 ```
 这个方式足够简单，但是需要开发自觉维护规范。
 
-而 NestJs 则提供了 Module 的注解，来强制定义模块，也是不错的方法。
+akajs 引入了 IOC 机制，所以模块之间的调用方式也会发生变化。
+假设有两个模块 user 和 account，在 user 里 export 模块
+
+src/user/UserModule.ts
+```ts
+import {UserService} from './service/UserService'
+import {Service, Inject} from '@akajs/core'
+
+@Service('UserModule')
+export class UserModule {
+  @Inject('UserService')
+  userService: UserService
+}
+
+```
+
+在 account 中，直接注入即可
+
+src/account/controller/AccountController.ts
+```ts
+import {Get, Controller, Inject} from '@akajs/core'
+import {UserModule} from '../../user'
+
+@Controller('/account')
+export class AccountController {
+  @Inject('UserModule')
+  public userModule: UserModule
+
+  @Get('/findUser')
+  async findUser (ctx) {
+    const {name} = ctx.parameters
+    const user = await this.userModule.userService.findOneUserByName(name)
+    ctx.body = user
+  }
+}
+```
+详细的代码示例见 integration/modules
+
+**备注**：
+NestJs 提供了 Module 的注解，来强制定义模块，也是不错的方法。
+
+```ts
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class CatsModule {}
+```
 
 **不过在云原生时代，有了 k8s 的辅助，最好还是不要做模块化了，拆成多个服务吧，服务足够小的情况下，分工和技术升级会简单很多**
 
@@ -349,7 +396,50 @@ DELETE /:model/:id
 ```
 
 
+## 自动加载机制
+Node 应用由模块组成，采用 CommonJS 模块规范。CommonJS 的加载过程是树状的，我们以 integration/mongoose-crud 示例项目为例，
+过一遍加载顺序。
+我们通过以下命令：
 
+```bash
+npm run dev
+```
+来启动服务，实际指向的文件是 src/main.ts
+如果我们想要 src/model/User.ts 这个文件被 v8 加载，那么前提是 src/main.ts 对其有直接或者间接的引用关系。
+在引入 IOC 之前，这个引用链条是：
+
+> main.ts --> app.ts --> router.ts --> controller.ts --> service.ts --> User.ts
+
+引入 IOC 之后
+
+> main.ts --> app.ts --> router.ts <... IOC ...> controller.ts --> service.ts <... IOC ..> User.ts
+
+Service 中的 User 是注入的，并非直接的引用关系，这样 v8 就不会加载 User.ts 了。
+
+router 中的 controller 是注入的，并非直接的引用关系，这样 v8 就不会加载 controller 了。
+
+所以我们需要自动加载机制。在初始化项目的地方：
+
+```ts
+import {Application} from '@akajs/core'
+import {initMongoose} from '@akajs/mongoose'
+
+// mongoose 最好先导入, mognoose 链接 db 需要时间
+initMongoose()
+const app: Application = new Application({})
+export {app}
+
+```
+initMongoose 方法默认会遍历 'src/model/\*.ts' （如果是多模块项目，可以指定遍历路径，详细见 integration/modules, 文件过滤规则语法参考 [glob](https://github.com/isaacs/node-glob) ）
+同时，Application 在初始化的时候也会遍历 'src/controller/\*.ts' 。
+
+通过这两个遍历功能，才能保证所有代码被正确加载。
+
+如果你在开发过程中，有部分代码是通过注入的，无法被加载的话，你只需要在合适的位置显示 import 即可。
+例如在 app.ts
+```ts
+import './service/UserService'
+```
 
 ## 常用工具
 @akajs/utils 收集了 Kalengo 后端开发常用的工具类，目前有
