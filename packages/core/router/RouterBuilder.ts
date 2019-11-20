@@ -16,6 +16,8 @@ import {router} from '../interfaces/router'
 export type RouterMiddleware = (ctx: Context, next: Function) => Promise<any>
 export type RouterHandle = (ctx: Context) => Promise<any>
 
+let routerInit: boolean = false
+
 export class RouterBuilder {
   private readonly _router: any
   private readonly _container: inversify.interfaces.Container
@@ -31,6 +33,7 @@ export class RouterBuilder {
   }
 
   build () {
+    if (routerInit) return
     // 把 Controller 在容器里绑定
     let constructors = getControllersFromMetadata()
 
@@ -79,6 +82,8 @@ export class RouterBuilder {
         })
       }
     })
+
+    routerInit = true
   }
 
   private handlerFactory (
