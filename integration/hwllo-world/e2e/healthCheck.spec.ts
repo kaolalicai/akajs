@@ -1,19 +1,21 @@
 import * as request from 'supertest'
-import {Application} from '@akajs/core'
+import {app} from '../src/app'
 
 describe('healthCheck.spec ', () => {
-  let app
   let server
-  before(async function () {
-    app = new Application({})
+
+  before(async () => {
     server = app.getHttpServer()
     await app.init()
+  })
+
+  after(async () => {
+    await app.close()
   })
   it('normal', async () => {
     await request(server)
       .get('/healthcheck/check')
       .expect(200)
-    await app.close()
   })
 
   it('edit server health status', async () => {
@@ -27,6 +29,5 @@ describe('healthCheck.spec ', () => {
     await request(server)
       .get('/healthcheck/check')
       .expect(503)
-    await app.close()
   })
 })

@@ -1,7 +1,15 @@
 import * as request from 'supertest'
+import * as sinon from 'sinon'
 import {routerPrefix, Application} from '@akajs/core'
 
 describe('config.spec 配置测试', () => {
+  before(async () => {
+    sinon.stub(Application.prototype,'buildRouters').returns({})
+  })
+
+  after(async () => {
+    sinon.restore()
+  })
   it('formatResponse false return ctx.body', async () => {
     let app = new Application({formatResponse: false, autoRequire: false})
     app.app.use(async (ctx, next) => {
