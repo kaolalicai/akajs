@@ -1,6 +1,6 @@
 {
   "name": "@akajs/core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "aka core",
   "scripts": {
     "test": "npm run test"
@@ -11,11 +11,13 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/utils": "^0.2.0",
+    "@akajs/utils": "^0.3.0",
     "@types/koa": "^2.0.50",
     "class-validator": "^0.10.1",
+    "glob": "^7.1.6",
     "inversify": "^5.0.1",
     "inversify-binding-decorators": "^4.0.0",
+    "inversify-inject-decorators": "^3.1.0",
     "koa": "^2.10.0",
     "koa-bodyparser": "^4.2.1",
     "koa-logger": "^3.2.1",
@@ -23,5 +25,8 @@
     "koa-static": "^5.0.0",
     "lodash": "^4.17.15"
   },
-  "gitHead": "f5ea113001ae30b9ff1fbbdc39c44e66a3cd8682"
+  "gitHead": "f5ea113001ae30b9ff1fbbdc39c44e66a3cd8682",
+  "devDependencies": {
+    "@types/glob": "^7.1.1"
+  }
 }
