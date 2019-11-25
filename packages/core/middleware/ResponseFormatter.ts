@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 import {ValidationError} from 'class-validator'
-import {AppError, logger} from '../../utils'
+import {BizError, logger} from '@akajs/utils'
 
 export function responseFormatter (pattern) {
   return async (ctx, next) => {
@@ -12,7 +12,7 @@ export function responseFormatter (pattern) {
       await next()
       return responseFormatter(ctx)
     } catch (error) {
-      if (error instanceof AppError) {
+      if (error instanceof BizError) {
         logger.info('业务逻辑错误 ', error)
         ctx.status = 200
         ctx.body = {
