@@ -1,4 +1,5 @@
 import {MongooseConnection} from './MongooseConnection'
+import {Model} from 'mongoose'
 
 const dbs = MongooseConnection.getInstance().dbs
 const defaultCon = MongooseConnection.getInstance().defaultCon
@@ -7,7 +8,7 @@ export function getConnections () {
   return dbs.values()
 }
 
-export function getModels () {
+export function getModels (): { [key: string]: Model<any> } {
   let models = {}
   for (let db of dbs.values()) {
     Object.assign(models, db.models)
@@ -15,7 +16,7 @@ export function getModels () {
   return models
 }
 
-export function getModel (str) {
+export function getModel (str): Model<any> {
   let model = null
   for (let db of dbs.values()) {
     if (db.models[str]) {
