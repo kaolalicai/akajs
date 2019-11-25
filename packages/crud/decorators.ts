@@ -4,15 +4,16 @@ import {addRouterMetadata, Controller} from '@akajs/core'
 import {decorate} from 'inversify'
 import {ICurdController} from './crudController'
 import {parseApiToQuery} from './resetApiUtil'
+import {router} from '../core/interfaces/http'
 
 function checkModel (model) {
   if (!model) throw new Error('CRUD Controller 必须定义 crudModel')
 }
 
-export function CrudController<T extends ICurdController> (path?: string) {
+export function CrudController<T extends ICurdController> (path?: string, ...middleware: router.Middleware[]) {
   return function (constructor: Function) {
     // 继承 Controller
-    decorate(Controller(path), constructor)
+    decorate(Controller(path, ...middleware), constructor)
     // Controller(path)(constructor)
 
     // 注册路由
