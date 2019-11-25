@@ -251,7 +251,7 @@ code = 1 代表发生了错误，当然你也可以定义自己的一套 code，
 ## Mongoose 支持
 akajs 默认支持 mongodb, 并且使用 mongoose 作为 orm。
 
-通过 MongoModel 注解定义 mongoose 对象
+通过 MongoModel 注解定义 mongoose 对象（已经废弃)
 
 ```ts
 import {IBaseMongoModel, MongoModel} from '@akajs/mongoose'
@@ -279,6 +279,28 @@ export class User implements IBaseMongoModel {
 }
 
 ```
+这里我们还要定义 UserModel 的类型，这样 typescript 才可以帮你做类型校验和代码提示。
+
+以上写法最大的问题就是，Interface 和 Schema 很多是重复的，为了简化 Model 的写法，我们引入了 [Typegoose](https://github.com/szokodiakos/typegoose)
+
+优化后的写法如下：
+
+```ts
+import {TypeMongoModel} from '@akajs/mongoose'
+import {prop, Typegoose, ModelType} from 'typegoose'
+
+@TypeMongoModel('UserModel')
+export class User extends Typegoose {
+  @prop({index: true, required: true})
+  phone: string
+  @prop()
+  name?: string
+  @prop()
+  count?: number
+}
+
+export type UserModel = ModelType<User>
+```
 
 程序初始化的时候会初始化 mongoose 连接并注入 model 到容器中。
 mongodb 的连接配置信息在 config 中定义
@@ -297,12 +319,6 @@ module.exports = {
   }
 }
 ```
-
-此外，你还可以定义 UserModel 的类型，这样 typescript 才可以帮你做类型校验和代码提示。
-
-> 当然，这些写法的坏处是每个属性都要在 Schema 和 Interface 定义，有点写两遍代码的意思。
-> 所以社区有一个库 [typegoose](https://github.com/szokodiakos/typegoose), 直接把 Class 和 Schema 合二为一。
-> 目前我个人不推荐使用这个库，还不太成熟，为了少写一部分代码，你需要学习新的写法+承受未知的BUG。
 
 
 定义好了 Model，就可以在 Controller 里使用了。

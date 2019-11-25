@@ -16,7 +16,8 @@
     "@types/mongoose": "^5.5.20",
     "config": "^3.2.3",
     "lodash": "^4.17.15",
-    "mongoose": "^5.7.5"
+    "mongoose": "^5.7.5",
+    "typegoose": "^5.9.1"
   },
   "gitHead": "f5ea113001ae30b9ff1fbbdc39c44e66a3cd8682"
 }

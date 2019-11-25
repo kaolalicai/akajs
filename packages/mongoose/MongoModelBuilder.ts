@@ -1,11 +1,15 @@
 import {container} from '@akajs/core'
 import {MongooseConnection} from './MongooseConnection'
-import {Document, Model} from 'mongoose'
-import {getModelsFromMetadata, getModelsFromContainer, getModelMetadata} from './utils/MetaData'
-import {TYPE, DUPLICATED_CONTROLLER_NAME} from './constant'
-import {IBaseMongoModel} from './interfaces/mongoose'
+import {Document, Model, Schema} from 'mongoose'
+import {getModelsFromMetadata, getModelMetadata} from './utils/MetaData'
+import {IBaseMongoModel, ITypeMongoOptions} from './interfaces/mongoose'
+import {Typegoose} from 'typegoose'
 
 MongooseConnection.getInstance().init()
+
+function instanceOfIBaseMongoModel (object: any): object is IBaseMongoModel {
+  return ('schema' in object)
+}
 
 export class MongoModelBuilder {
   private connection: MongooseConnection
@@ -15,34 +19,33 @@ export class MongoModelBuilder {
   }
 
   build () {
-    // 把 Model 在容器里绑定
+    // 找出注解的 class
     let constructors = getModelsFromMetadata()
 
-    constructors.forEach((constructor) => {
-      const name = constructor.name
-
-      if (container.isBoundNamed(TYPE.Model, name)) {
-        throw new Error(DUPLICATED_CONTROLLER_NAME(name))
+    constructors.forEach((Model: any) => {
+      const m = new Model()
+      let modelMetadata = getModelMetadata(Model)
+      // TODO 支持多 DB 连接
+      let db = this.connection.defaultCon
+      let modelName = ''
+      let collectionName = ''
+      let schema: Schema = null
+      if (instanceOfIBaseMongoModel(m)) {
+        schema = m.schema
       }
-
-      container.bind(TYPE.Model)
-        .to(constructor)
-        .whenTargetNamed(name)
-    })
-
-    // 从容器里取出所有 Model，然后注册 mongoose
-    let models = getModelsFromContainer(container, false)
-
-    models.forEach((model: IBaseMongoModel) => {
-      const m: IBaseMongoModel = container.resolve(model.constructor as any)
-      if (!m.db) {
-        m.db = this.connection.defaultCon
+      if (m instanceof Typegoose) {
+        const op: ITypeMongoOptions = modelMetadata.options || {}
+        schema = m.buildSchema(Model, {})
+        schema.set(modelMetadata.options as any)
+        // _.defaults(op, modelMetadata.options)
+        collectionName = op.collectionName || m.constructor.name
+        modelName = op.modelName || m.constructor.name
       }
-      let modelMetadata = getModelMetadata(model.constructor)
-      m.schema.set('toObject', {getters: true, virtuals: true, minimize: false})
-      m.schema.set('toJSON', {getters: true, virtuals: true, minimize: false})
-      m.schema.set('timestamps', true)
-      const mongooseModel = m.db.model<Document>(m.modelName, m.schema, m.collectionName || m.modelName)
+      // TODO 如果有值就不覆盖
+      if (!schema.get('toObject')) schema.set('toObject', {getters: true, virtuals: true, minimize: false})
+      if (!schema.get('toJSON')) schema.set('toJSON', {getters: true, virtuals: true, minimize: false})
+      if (!schema.get('timestamps')) schema.set('timestamps', true)
+      const mongooseModel = db.model<Document>(modelName, schema, collectionName || modelName)
       container.bind<Model<Document>>(modelMetadata.identify).toConstantValue(mongooseModel)
     })
   }

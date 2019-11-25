@@ -20,11 +20,11 @@ export function getModelMetadata (constructor: any) {
 
 export function getModelsFromContainer (
   container: inversifyInterfaces.Container,
-  forceControllers: boolean
+  force: boolean
 ) {
   if (container.isBound(TYPE.Model)) {
-    return container.getAll<IBaseMongoModel>(TYPE.Model)
-  } else if (forceControllers) {
+    return container.getAll(TYPE.Model)
+  } else if (force) {
     throw new Error(NO_MODELS_FOUND)
   } else {
     return []
