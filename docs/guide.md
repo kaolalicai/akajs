@@ -457,6 +457,25 @@ initMongoose 方法默认会遍历 'src/model/\*.ts' （如果是多模块项目
 import './service/UserService'
 ```
 
+## 健康检查
+通过接口获取/修改服务状态
+
+### 获取服务器状态
+通过请求HTTP状态码判断，200:正常 503:服务状态异常
+```
+GET /healthcheck/check
+```
+
+### 修改服务器状
+设置状态为异常
+```
+GET /healthcheck/status/reset?status=false
+```
+设置状态为正常
+```
+GET /healthcheck/status/reset?status=true
+```
+
 ## 常用工具
 @akajs/utils 收集了 Kalengo 后端开发常用的工具类，目前有
 - DateUtil ：日期计算，节假日
