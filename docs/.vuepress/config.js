@@ -11,7 +11,8 @@ module.exports = {
     sidebar: [
       '/',
       ['/quickstart', '快速开始'],
-      ['/guide', '指南']
+      ['/guide', '指南'],
+      ['/changelog', 'Changelog']
     ]
   }
 }
