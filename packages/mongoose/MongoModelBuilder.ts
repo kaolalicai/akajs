@@ -32,6 +32,8 @@ export class MongoModelBuilder {
       let schema: Schema = null
       if (instanceOfIBaseMongoModel(m)) {
         schema = m.schema
+        modelName = m.modelName
+        collectionName = m.collectionName
       }
       if (m instanceof Typegoose) {
         const op: ITypeMongoOptions = modelMetadata.options || {}
