@@ -143,6 +143,9 @@ export class MiddlewareController {
 
 
 ## IOC 依赖注入
+
+### 为什么要用 IOC
+
 IOC 可以帮助我们实现功能解耦，不过这个要业务比较复杂的时候才需要，项目简单的时候 IOC 也可以作为单例的一种实现方式
 
 IOC 通过 [inversify](https://github.com/inversify/InversifyJS) 这个库实现
@@ -190,6 +193,70 @@ export class WechatController {
 后面要改动其中某个关系就要大动干戈了，你可能要修改多处代码，还可能改错和改漏。
 
 IOC 的目的就是把组件关系从代码里抽出来，由配置文件来定义，修改引用关系直接通过修改配置文件即可实现。
+
+akajs 提供了以下常用的 IOC 注解
+
+### Inject
+注入对象
+
+### LazyInject
+某些待注入对象可能并不能在应用启动的时候就完成初始化，例如 Mongoose 的 Model，初始化需要些时间，我们可以是用 LazyInject 来延迟注入时机，避免启动报错
+
+```ts
+
+@CrudController('/user')
+export class UserController implements ICurdController {
+
+  @LazyInject('UserModel')
+  public crudModel: UserModel
+}
+
+```
+
+### Service
+对 Service 类的声明与使用
+
+UserService.ts
+```ts
+@Service('UserService')
+export class UserService {
+}
+```
+
+UserController.ts
+```ts
+@Controller('/user')
+export class UserController {
+
+  @Inject('UserService')
+  public userService: UserService
+}
+```
+
+
+
+### Autowired
+TODO 还未实现
+
+大部分对象的声明和注入的 key 和变量名或者类名是一致的，也就是说，我们其实可以做到更智能的自动注入。
+
+UserService.ts
+```ts
+@Service()
+export class UserService {
+}
+```
+
+UserController.ts
+```ts
+@Controller('/user')
+export class UserController {
+
+  @Autowired()
+  public userService: UserService
+}
+```
+
 
 ## 参数和返回值处理
 
@@ -456,6 +523,33 @@ initMongoose 方法默认会遍历 'src/model/\*.ts' （如果是多模块项目
 ```ts
 import './service/UserService'
 ```
+
+## Logger
+akajs 默认配置了 request log，所有 http 请求都会输出 log，背后实现是 morgan 这个中间件
+
+> 2019-11-27 18:14:19.48 <info> Application.js:51 () POST /api/v1/user 200 227 - 3.428 ms
+
+此外，在应用层，我们可以是 logger 对象来打印 log
+
+```ts
+import { logger } from '@akajs/utils'
+
+logger.info(`findOne ${this.crudModel.name} ${itemId}`)
+```
+
+如果需要把 logger 文件写入到文件中，直接修改 config 里的配置
+```js
+log: {
+    level: 'info',
+    root: './logs',
+    allLogsFileName: 'mongoose'
+}
+```
+root 就是文件保存的路径。
+allLogsFileName 是文件名。
+日志默认会按日分割。
+
+更详细的配置见 logger 的底层实现库 [tracer](https://github.com/baryon/tracer)
 
 ## 健康检查
 通过接口获取/修改服务状态
