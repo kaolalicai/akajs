@@ -524,12 +524,13 @@ initMongoose 方法默认会遍历 'src/model/\*.ts' （如果是多模块项目
 import './service/UserService'
 ```
 
+
 ## Logger
 akajs 默认配置了 request log，所有 http 请求都会输出 log，背后实现是 morgan 这个中间件
 
-> 2019-11-27 18:14:19.48 <info> Application.js:51 () POST /api/v1/user 200 227 - 3.428 ms
+`2019-11-27 18:14:19.48 <info> Application.js:51 () POST /api/v1/user 200 227 - 3.428 ms`
 
-此外，在应用层，我们可以是 logger 对象来打印 log
+此外，在应用层，我们可以使用 logger 对象来打印 log
 
 ```ts
 import { logger } from '@akajs/utils'
@@ -550,6 +551,8 @@ allLogsFileName 是文件名。
 日志默认会按日分割。
 
 更详细的配置见 logger 的底层实现库 [tracer](https://github.com/baryon/tracer)
+
+这个库的优势是可以打印 log 发生的文件位置
 
 ## 健康检查
 通过接口获取/修改服务状态
@@ -575,7 +578,7 @@ GET /healthcheck/status/reset?status=true
 - DateUtil ：日期计算，节假日
 - NumberUtil ： 主要处理 0.1 + 0.2 = 0.30000000000000004 问题
 - Logger ： logger 工具，可以显示logger所在代码位置
-- AppError ：自定义错误对象，有 error code
+- BizError ：自定义错误对象，有 error code
 
 使用样例
 

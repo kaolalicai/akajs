@@ -3,6 +3,7 @@ module.exports = {
   base: '/akajs_doc/',
   description: 'Just playing around',
   themeConfig: {
+    displayAllHeaders: true,
     nav: [
       {text: '首页', link: '/'},
       {text: '指南', link: '/guide'},
