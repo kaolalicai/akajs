@@ -5,8 +5,8 @@ import * as glob from 'glob'
 import * as path from 'path'
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
-import * as koaLogger from 'koa-logger'
 import * as Router from 'koa-router'
+import * as morgan from 'koa-morgan'
 import * as koaStatic from 'koa-static'
 import {logger} from '@akajs/utils'
 import {buildRouters, HealthCheckRouter} from './router'
@@ -46,10 +46,17 @@ export class Application {
 
   buildPlugin () {
     this._app = this._config.existsKoa || new Koa()
-    // middleware
     if (this._config.bodyParser !== false) this._app.use(bodyParser())
-    this._app.use(koaLogger((str, args) => {
-      if (str.includes('healthcheck')) return
+    // request log
+    this._app.use(morgan(function (tokens, req, res) {
+      if (tokens.url(req, res).includes('healthcheck')) return
+      let str = [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'), '-',
+        tokens['response-time'](req, res), 'ms'
+      ].join(' ')
       logger.info(str)
     }))
     // response format and  error handle

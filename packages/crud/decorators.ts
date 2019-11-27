@@ -5,6 +5,7 @@ import {decorate} from 'inversify'
 import {ICurdController} from './crudController'
 import {parseApiToQuery} from './resetApiUtil'
 import {router} from '../core/interfaces/http'
+import { logger } from '@akajs/utils'
 
 function checkModel (model) {
   if (!model) throw new Error('CRUD Controller 必须定义 crudModel')
@@ -40,6 +41,7 @@ export function CrudController<T extends ICurdController> (path?: string, ...mid
     constructor.prototype.findOne = constructor.prototype.findOne || async function findOne (this: ICurdController, ctx: Context) {
       checkModel(this.crudModel)
       const {itemId} = ctx.params
+      logger.info(`findOne ${this.crudModel.name} ${itemId}`)
       const one = await this.crudModel.findById(itemId)
       if (!one) throw new Error('找不到 ' + path + ' id:' + itemId)
       ctx.body = one
@@ -53,6 +55,7 @@ export function CrudController<T extends ICurdController> (path?: string, ...mid
     })
 
     constructor.prototype.create = constructor.prototype.create || async function create (this: ICurdController, ctx: Context, itemDto) {
+      logger.info(`create ${this.crudModel.name} `, itemDto)
       checkModel(this.crudModel)
       ctx.body = await new this.crudModel(itemDto).save()
     }
@@ -67,6 +70,7 @@ export function CrudController<T extends ICurdController> (path?: string, ...mid
     constructor.prototype.update = constructor.prototype.update || async function update (this: ICurdController, ctx: Context, itemDto) {
       checkModel(this.crudModel)
       const itemId = ctx.params.itemId
+      logger.info(`update ${this.crudModel.name} ${itemId} `, itemDto)
       const one = await this.crudModel.findById(itemId)
       if (!one) throw new Error('找不到 ' + path + ' ' + itemId)
       assign(one, itemDto)
@@ -83,6 +87,7 @@ export function CrudController<T extends ICurdController> (path?: string, ...mid
     constructor.prototype.remove = constructor.prototype.remove || async function remove (this: ICurdController, ctx: Context) {
       checkModel(this.crudModel)
       const itemId = ctx.params.itemId
+      logger.info(`delete ${this.crudModel.name} ${itemId}`)
       const one = await this.crudModel.findById(itemId)
       if (!one) throw new Error('找不到 ' + path + ' ' + itemId)
       await this.crudModel.remove({_id: itemId})

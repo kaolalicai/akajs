@@ -1,6 +1,8 @@
 module.exports = {
   log: {
-    level: 'info'
+    level: 'info',
+    root: './logs',
+    allLogsFileName: 'mongoose'
   },
   port: process.env.PORT || 3000,
   mongodb: {
