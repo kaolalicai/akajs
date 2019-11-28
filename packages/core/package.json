@@ -1,6 +1,6 @@
 {
   "name": "@akajs/core",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "aka core",
   "scripts": {
     "test": "npm run test"
