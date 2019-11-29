@@ -1,3 +1,11 @@
+## 0.4.5
+- feat: logger 添加 LoggerFactory 支持自定义
+- feat: logger 支持把O bject 和错误对象输出为一行，方便 Log工具处理
+- feat: logger 支持写入文件和按日分割
+- feat: request log 使用更加简单的格式
+- feat: @Service 默认为单例
+- fix: mongoModel 的 modelName 没生效
+---
 ## 0.4.0
 - akajs/mongoose 支持 typegoose
 - akajs/mongoose 的 getModel 方法返回类型

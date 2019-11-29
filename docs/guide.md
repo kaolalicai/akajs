@@ -550,9 +550,15 @@ root 就是文件保存的路径。
 allLogsFileName 是文件名。
 日志默认会按日分割。
 
-更详细的配置见 logger 的底层实现库 [tracer](https://github.com/baryon/tracer)
+更详细的配置见 logger 的底层实现库 [tracer](https://github.com/baryon/tracer), 这个库的优势是可以打印 log 发生的文件位置
 
-这个库的优势是可以打印 log 发生的文件位置
+如果你需要自定义的 logger，直接用新的 config 构造一个 logger 就行。
+
+```ts
+import { logger } from '@akajs/utils'
+const logger = LoggerFactory(config)
+```
+
 
 ## 健康检查
 通过接口获取/修改服务状态
