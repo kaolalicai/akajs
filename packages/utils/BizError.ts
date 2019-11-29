@@ -8,14 +8,15 @@ export class BizError extends Error {
   constructor (code: number, msg: string, ...values: Array<any>)
   constructor (paramOne?: string | number, paramTwo?: string, ...values: Array<any>) {
     super()
-    // new BizError('msg')
+    this.code = 1
+    // new BizError('hello')
     if (typeof paramOne === 'string' && typeof paramTwo === 'undefined') {
       this.message = paramOne
       return
     }
     // new BizError('hello %s', 'world')
     // new BizError('hello %s $s', 'world', 233)
-    if (typeof paramOne === 'string' && typeof paramTwo === 'string') {
+    if (typeof paramOne === 'string' && typeof paramTwo !== 'undefined') {
       this.message = format(paramOne, paramTwo, ...values)
       return
     }
