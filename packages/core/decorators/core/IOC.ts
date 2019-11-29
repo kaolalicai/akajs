@@ -13,7 +13,7 @@ export function Service (
   return function (target: any) {
     // decorate(provide(serviceIdentifier, true), target)
     decorate(injectable(), target)
-    container.bind(serviceIdentifier).to(target)
+    container.bind(serviceIdentifier).to(target).inSingletonScope()
     return target
 
   }
