@@ -30,6 +30,7 @@ export function responseFormatter (pattern) {
         }
         return
       } else if (_.isArray(error) && error[0] instanceof ValidationError) {
+        logger.info('参数校验错误 ', error)
         const key = Object.keys(error[0].constraints)[0]
         const msg = error[0].constraints[key]
         ctx.body = {
