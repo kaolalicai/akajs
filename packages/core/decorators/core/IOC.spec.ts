@@ -17,7 +17,7 @@ export interface ThrowableWeapon {
   throw (): string
 }
 
-describe('Service auto load ', () => {
+describe('Service annotation ', () => {
   let server
 
   @Service(Katana)
