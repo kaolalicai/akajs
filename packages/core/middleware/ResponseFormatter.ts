@@ -16,7 +16,7 @@ export function responseFormatter (pattern) {
         logger.info('业务逻辑错误 ', error)
         ctx.status = 200
         ctx.body = {
-          code: error.code,
+          code: error.code || 1,
           message: error.message
         }
         return
@@ -25,7 +25,7 @@ export function responseFormatter (pattern) {
         const msg = error.details.map(item => item.message).join(',')
         ctx.status = 200
         ctx.body = {
-          code: -1,
+          code: 1,
           message: msg
         }
         return
