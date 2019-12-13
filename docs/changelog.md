@@ -1,3 +1,9 @@
+## 0.5.0
+- feat: @akajs/core 拆分为 @akajs/ioc 和 @akajs/web
+- feat: @akajs/crud 并入 @akajs/web
+- feat: 支持 logger to db
+- feat: 新增 @Autowired 注解，简化注入方式
+
 ## 0.4.5
 - feat: logger 添加 LoggerFactory 支持自定义
 - feat: logger 支持把O bject 和错误对象输出为一行，方便 Log工具处理

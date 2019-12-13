@@ -2,6 +2,56 @@
 sidebarDepth: 2
 ---
 
+## 目标
+akajs 的目标是提供一个开箱即用的 web 服务，本质上是基于 koa，组装了常用的中间件，搭配上 ORM、redis 等工具。
+此外还通过项目模板的方式，展示一些 Web项目的最佳实践。
+
+## akajs 的主要模块
+- @akajs/web ： 提供 koa 相关的功能，包括 crud 自动生成
+- @akajs/ioc ： 提供容器和依赖注入实现
+- @akajs/mongoose ： 基于 typegoose 提供更简单的 orm
+- @akajs/utils ： 常用工具，详细见后文
+
+## 常用的 Koa 中间件
+akajs 通用一下方式来初始化 koa 服务。
+
+```ts
+import {Application} from '@akajs/web'
+
+const app: Application = new Application({})
+export {app}
+
+```
+初始化 Application 的时候，会新建 koa 对象，并挂载常用中间件进去，最后再把注解式的路由绑定到 koa 中。
+
+所以，你也可以分步地完成这个过程。
+
+```ts
+import {Application} from '@akajs/web'
+
+const app: Application = new Application({
+  autoBuild: false, // 不再自动初始化
+})
+// middleware
+app.bodyParser()
+app.requestLog()
+app.assembleParameters()
+app.buildMiddleware(requestLog)  // 自定义的中间件
+app.formatResponse()
+// app.statics()
+
+// auto require
+app.requireControllers()
+// routers
+app.buildRouters()
+// koa.use(requestLog)
+export {app}
+```
+
+因为 koa 中间件的注册顺序会对实际效果有影响的，
+所以你需要自定义中间件的话，例如在 requestLog 和 formatResponse 之间插入中间件，就只能采用这种方式来初始化 koa 了。
+每个中间件的作用后文都会有讲解。
+
 ## 系统配置 config
 akajs 基于 [config](https://github.com/lorenwest/node-config) 这个包来实现系统配置，在项目目录下有个 config 文件夹，里面是不同环境的配置
 ```
@@ -236,7 +286,6 @@ export class UserController {
 
 
 ### Autowired
-TODO 还未实现
 
 大部分对象的声明和注入的 key 和变量名或者类名是一致的，也就是说，我们其实可以做到更智能的自动注入。
 
@@ -526,6 +575,7 @@ import './service/UserService'
 
 
 ## Logger
+### logger to file
 akajs 默认配置了 request log，所有 http 请求都会输出 log，背后实现是 morgan 这个中间件
 
 `2019-11-27 18:14:19.48 <info> Application.js:51 () POST /api/v1/user 200 227 - 3.428 ms`
@@ -559,6 +609,25 @@ import { logger } from '@akajs/utils'
 const logger = LoggerFactory(config)
 ```
 
+### logger to mongodb
+如果没有好用的日志分析服务的话，通过日志排查问题还是比较麻烦的，akajs 提供一个简单方案，把 log 存入 mongodb 中。
+1. 定义一个 LogModel
+```ts
+import {TypeMongoModel} from '@akajs/mongoose'
+import {BaseLog} from '@akajs/web'
+
+@TypeMongoModel('LogModel')
+export class Log extends BaseLog {
+}
+```
+
+2. 启用 log 记录中间件
+```ts
+const app: Application = new Application({
+  requestLogToDB: true
+})
+```
+该中间件默认值记录 post 类的请求，有需求的话，参考这个自己写个中间件即可。
 
 ## 健康检查
 通过接口获取/修改服务状态
@@ -615,6 +684,7 @@ Java 的 Web 框架 Spring Boot 就是用这个方式。但是，Node 这边还�
 
 ## Test
 akajs 默认使用 mocha 来运行测试，使用 chai 进行断言。
+在示例项目中，提供了完整的单元测试实现 demo。
 
 ### 运行测试
 
