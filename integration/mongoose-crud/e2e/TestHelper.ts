@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test'
 console.log('current env', process.env.NODE_ENV)
-import {routerPrefix} from '@akajs/core'
+import {routerPrefix} from '@akajs/web'
 import {request} from './helper/request'
 import {clearDB, closeDB, initData} from './helper/database'
 

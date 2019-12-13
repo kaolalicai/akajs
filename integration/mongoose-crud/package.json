@@ -8,8 +8,8 @@
     "dev": "ts-node src/main.ts"
   },
   "dependencies": {
-    "@akajs/core": "0.0.1",
-    "@akajs/crud": "0.0.1",
+    "@akajs/ioc": "0.0.1",
+    "@akajs/web": "0.0.1",
     "config": "^3.2.3",
     "reflect-metadata": "0.1.13",
     "typescript": "3.6.3"

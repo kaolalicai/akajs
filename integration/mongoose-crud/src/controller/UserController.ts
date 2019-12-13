@@ -1,5 +1,5 @@
-import {Get, Inject, LazyInject} from '@akajs/core'
-import {CrudController, ICurdController} from '@akajs/crud'
+import {LazyInject} from '@akajs/ioc'
+import {Get, CrudController, ICurdController} from '@akajs/web'
 import {UserModel} from '../model/User'
 
 @CrudController('/user')
