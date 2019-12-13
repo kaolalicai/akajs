@@ -1,5 +1,5 @@
-import {injectable} from 'inversify'
+import {Injectable} from '@akajs/ioc'
 
-@injectable()
+@Injectable()
 export class AccountModule {
 }

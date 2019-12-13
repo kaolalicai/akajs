@@ -1,6 +1,5 @@
-import {Service, LazyInject} from '@akajs/core'
+import {Service, LazyInject} from '@akajs/ioc'
 import {UserModel} from '../model/User'
-import {Inject} from '../../../../../packages/core/decorators'
 import {RecordModel} from '../model/Record'
 
 @Service('UserService')
@@ -9,7 +8,7 @@ export class UserService {
   @LazyInject('UserModel')
   private userModel: UserModel
 
-  @Inject('RecordModel')
+  @LazyInject('RecordModel')
   private recordModel: RecordModel
 
   async findOneUserByName (name) {

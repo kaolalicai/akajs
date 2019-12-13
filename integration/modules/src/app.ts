@@ -1,4 +1,4 @@
-import {Application} from '@akajs/core'
+import {Application} from '@akajs/web'
 import {initMongoose} from '@akajs/mongoose'
 
 // mongoose 最好先导入

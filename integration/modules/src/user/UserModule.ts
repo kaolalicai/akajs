@@ -1,5 +1,5 @@
 import {UserService} from './service/UserService'
-import {Service, Inject} from '@akajs/core'
+import {Service, Inject} from '@akajs/ioc'
 
 @Service('UserModule')
 export class UserModule {

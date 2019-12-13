@@ -1,4 +1,5 @@
-import {Get, Controller, Inject} from '@akajs/core'
+import {Get, Controller} from '@akajs/web'
+import {Inject} from '@akajs/ioc'
 import {UserModule} from '../../user'
 
 @Controller('/account')
