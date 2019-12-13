@@ -39,7 +39,7 @@ export function responseFormatter (pattern) {
         }
         return
       } else {
-        logger.error('系统内部错误 ', error)
+        logger.error('系统内部错误 ', error.stack)
         ctx.status = 200
         ctx.body = {
           code: 1,

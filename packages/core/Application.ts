@@ -4,6 +4,7 @@ import * as http from 'http'
 import * as glob from 'glob'
 import * as path from 'path'
 import * as Koa from 'koa'
+import {Context} from 'koa'
 import * as bodyParser from 'koa-bodyparser'
 import * as Router from 'koa-router'
 import * as morgan from 'koa-morgan'
@@ -12,6 +13,7 @@ import {logger} from '@akajs/utils'
 import {buildRouters, HealthCheckRouter} from './router'
 import {responseFormatter} from './middleware/ResponseFormatter'
 import {parameters} from './middleware/Parameters'
+import {requestLog} from './middleware/RequestLog'
 import {container} from './cantainer'
 import {httpServe} from './interfaces/http'
 
@@ -34,19 +36,45 @@ export class Application {
     this._app = value
   }
 
-  private _app
+  private _app: Context
   private _router
   private server
   private _config: httpServe.IKoaConfig
 
   constructor (config: httpServe.IKoaConfig) {
     this._config = config
-    this.createServer()
+    this.initKoa()
+    if (this._config.autoBuild !== false) this.createServer()
+  }
+
+  initKoa () {
+    this._app = this._config.existsKoa || new Koa()
   }
 
   buildPlugin () {
-    this._app = this._config.existsKoa || new Koa()
-    if (this._config.bodyParser !== false) this._app.use(bodyParser())
+    // this._app = this._config.existsKoa || new Koa()
+    if (this._config.bodyParser !== false) this.bodyParser()
+    if (this._config.requestLog !== false) this.requestLog()
+    if (this._config.assembleParameters !== false) this.assembleParameters()
+    if (this._config.requestLogToDB === true) this.requestLogToDB()
+    if (this._config.formatResponse !== false) this.formatResponse()
+    if (this._config.statics === true) this.statics()
+  }
+
+  statics () {
+    this._app.use(koaStatic('assets'))
+  }
+
+  bodyParser () {
+    this._app.use(bodyParser())
+  }
+
+  formatResponse () {
+    // response format and  error handle
+    this._app.use(responseFormatter('^/api'))
+  }
+
+  requestLog () {
     // request log
     this._app.use(morgan(function (tokens, req, res) {
       if (tokens.url(req, res).includes('healthcheck')) return
@@ -59,14 +87,19 @@ export class Application {
       ].join(' ')
       logger.info(str)
     }))
-    // response format and  error handle
-    if (this._config.formatResponse !== false) this._app.use(responseFormatter('^/api'))
+  }
 
+  requestLogToDB () {
+    this._app.use(requestLog)
+  }
+
+  assembleParameters () {
     // 将所有参数注册到 ctx.parameters
     if (this._config.assembleParameters !== false) this._app.use(parameters)
+  }
 
-    // statics
-    this._app.use(koaStatic('assets'))
+  buildMiddleware (middleware) {
+    this._app.use(middleware)
   }
 
   buildRouters () {
