@@ -69,7 +69,7 @@ export class RouterBuilder {
           let methodName = metadata.key
           let handler: RouterHandle = this.handlerFactory(controller, methodName)
           let routeMiddleware: RouterMiddleware[] = this.resolveMiddleware(...metadata.middleware)
-          logger.debug('register router', metadata.method, controllerMetadata.target.name, controllerMetadata.path, metadata.path)
+          logger.debug('register router', metadata.method, controllerMetadata.target.name,this._router.opts.prefix, controllerMetadata.path, metadata.path)
           this._router[metadata.method](
             `${controllerMetadata.path}${metadata.path}`,
             ...controllerMiddleware,

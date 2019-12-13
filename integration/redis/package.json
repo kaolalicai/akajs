@@ -1,0 +1,23 @@
+{
+  "name": "mongoose-crud",
+  "version": "1.0.0",
+  "description": "akajs mongoose curd demo",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha \"e2e/*.spec.ts\" --reporter spec --require ts-node/register",
+    "dev": "ts-node src/main.ts"
+  },
+  "dependencies": {
+    "@akajs/core": "0.0.1",
+    "@akajs/redis": "0.0.1",
+    "config": "^3.2.3",
+    "reflect-metadata": "0.1.13",
+    "typescript": "3.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "12.7.8",
+    "supertest": "4.0.2",
+    "ts-node": "8.4.1",
+    "bluebird": "^3.5.1"
+  }
+}

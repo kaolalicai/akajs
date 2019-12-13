@@ -9,7 +9,8 @@ const packages = {
   utils: createProject('packages/utils/tsconfig.json'),
   core: createProject('packages/core/tsconfig.json'),
   crud: createProject('packages/crud/tsconfig.json'),
-  mongoose: createProject('packages/mongoose/tsconfig.json')
+  mongoose: createProject('packages/mongoose/tsconfig.json'),
+  redis: createProject('packages/redis/tsconfig.json')
 }
 
 const modules = Object.keys(packages)
