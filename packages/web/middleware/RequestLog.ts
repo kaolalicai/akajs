@@ -1,5 +1,6 @@
 import {cloneDeep, last, get} from 'lodash'
 import {container} from '@akajs/ioc'
+import ObjectID from 'bson-objectid'
 
 function getUserId (ctx, response) {
   const userId = get(ctx.parameters, 'userId') || get(ctx.parameters, 'ud') || get(ctx.parameters, 'data.userId')
@@ -21,6 +22,9 @@ function formatResponse (response) {
 export async function requestLog (ctx, next) {
   let response = null
   const time = Date.now()
+  if (ctx.parameters && !ctx.parameters.orderId) {
+    ctx.parameters.orderId = new ObjectID().toString()
+  }
   try {
     await next()
   } catch (err) {
@@ -35,6 +39,7 @@ export async function requestLog (ctx, next) {
     let log = {
       time,
       userId: userId,
+      orderId: ctx.parameters.orderId,
       httpMethod: ctx.req.method,
       useTime: Date.now() - time,
       type: 'in',
