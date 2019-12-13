@@ -1,6 +1,6 @@
 {
   "name": "@akajs/web",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "aka web with koa",
   "scripts": {
     "test": "npm run test"
