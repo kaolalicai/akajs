@@ -1,4 +1,4 @@
-import {container} from '@akajs/core'
+import {container} from '@akajs/ioc'
 import {logger} from '@akajs/utils'
 import * as _ from 'lodash'
 import * as config from 'config'

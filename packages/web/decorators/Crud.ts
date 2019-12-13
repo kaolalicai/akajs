@@ -1,11 +1,11 @@
 import {Context} from 'koa'
 import {assign} from 'lodash'
-import {addRouterMetadata, Controller} from '@akajs/core'
 import {decorate} from 'inversify'
-import {ICurdController} from './crudController'
-import {parseApiToQuery} from './resetApiUtil'
-import {router} from '../core/interfaces/http'
-import { logger } from '@akajs/utils'
+import {logger} from '@akajs/utils'
+import {ICurdController} from '../crud/crudController'
+import {parseApiToQuery} from '../crud/resetApiUtil'
+import {Controller, addRouterMetadata} from './RequestMapping'
+import {router} from '../interfaces/http'
 
 function checkModel (model) {
   if (!model) throw new Error('CRUD Controller 必须定义 crudModel')

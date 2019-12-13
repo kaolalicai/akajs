@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import {Service, Autowired} from './IOC'
 import {expect} from 'chai'
-import {container} from '../../cantainer'
+import {container} from '../cantainer'
 
 export interface Warrior {
   fight (): string

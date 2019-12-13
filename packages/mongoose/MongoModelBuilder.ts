@@ -1,4 +1,4 @@
-import {container} from '@akajs/core'
+import {container} from '@akajs/ioc'
 import {MongooseConnection} from './MongooseConnection'
 import {Document, Model, Schema} from 'mongoose'
 import {getModelsFromMetadata, getModelMetadata} from './utils/MetaData'

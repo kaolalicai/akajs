@@ -1,5 +1,5 @@
 import {cloneDeep, last, get} from 'lodash'
-import {container} from '../cantainer'
+import {container} from '@akajs/ioc'
 
 function getUserId (ctx, response) {
   const userId = get(ctx.parameters, 'userId') || get(ctx.parameters, 'ud') || get(ctx.parameters, 'data.userId')

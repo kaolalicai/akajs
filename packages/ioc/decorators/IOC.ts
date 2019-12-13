@@ -1,5 +1,5 @@
 import {decorate, injectable, interfaces as inversifyInterfaces, inject} from 'inversify'
-import {container} from '../../cantainer'
+import {container} from '../cantainer'
 import getDecorators from 'inversify-inject-decorators'
 
 const {lazyInject} = getDecorators(container, false)

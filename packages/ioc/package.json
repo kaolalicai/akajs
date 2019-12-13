@@ -1,0 +1,18 @@
+{
+  "name": "@akajs/ioc",
+  "version": "0.4.7",
+  "description": "aka ioc",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nick",
+  "license": "MIT",
+  "dependencies": {
+    "inversify": "^5.0.1",
+    "inversify-binding-decorators": "^4.0.0",
+    "inversify-inject-decorators": "^3.1.0"
+  }
+}

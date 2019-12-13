@@ -14,7 +14,7 @@ import {buildRouters, HealthCheckRouter} from './router'
 import {responseFormatter} from './middleware/ResponseFormatter'
 import {parameters} from './middleware/Parameters'
 import {requestLog} from './middleware/RequestLog'
-import {container} from './cantainer'
+import {container} from '@akajs/ioc'
 import {httpServe} from './interfaces/http'
 
 export const routerPrefix = '/api/v1'
