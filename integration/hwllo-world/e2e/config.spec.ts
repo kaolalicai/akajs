@@ -1,5 +1,5 @@
 import * as request from 'supertest'
-import {routerPrefix, Application} from '@akajs/core'
+import {routerPrefix, Application} from '@akajs/web'
 
 describe('config.spec 配置测试', () => {
   it('formatResponse false return ctx.body', async () => {

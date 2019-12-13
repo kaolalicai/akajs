@@ -1,5 +1,5 @@
 import * as request from 'supertest'
-import {routerPrefix} from '@akajs/core'
+import {routerPrefix} from '@akajs/web'
 import {app} from '../src/app'
 
 describe('Hello world ', () => {

@@ -1,5 +1,5 @@
 import {isObject} from 'lodash'
-import {Controller, Get} from '@akajs/core'
+import {Controller, Get} from '@akajs/web'
 import {logger} from '@akajs/utils'
 
 const routerMiddleware = async function (ctx, next) {

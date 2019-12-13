@@ -1,5 +1,5 @@
 import * as request from 'supertest'
-import {Application} from '@akajs/core'
+import {Application} from '@akajs/web'
 
 describe('healthCheck.spec ', () => {
   let app

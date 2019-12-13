@@ -1,4 +1,4 @@
-import {Service} from '@akajs/core'
+import {Service} from '@akajs/ioc'
 
 @Service('UserService')
 export class UserService {

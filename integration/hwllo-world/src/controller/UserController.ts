@@ -1,4 +1,5 @@
-import {Controller, Get, Inject, DTO,Post} from '@akajs/core'
+import {Controller, Get, DTO, Post} from '@akajs/web'
+import {Inject} from '@akajs/ioc'
 import {logger} from '@akajs/utils'
 import {UserService} from '../service/UserService'
 import {MinLength} from 'class-validator'
