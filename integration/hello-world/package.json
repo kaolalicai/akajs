@@ -7,15 +7,15 @@
     "test": "mocha \"e2e/*.spec.ts\" --reporter spec --require ts-node/register"
   },
   "dependencies": {
-    "@akajs/ioc": "0.1.1",
-    "@akajs/web": "0.1.1",
-    "config": "^3.2.3",
+    "@akajs/ioc": "0.5.0",
+    "@akajs/web": "0.5.1",
+    "config": "^3.2.4",
     "reflect-metadata": "0.1.13",
-    "typescript": "3.6.3"
+    "typescript": "3.7.3"
   },
   "devDependencies": {
-    "@types/node": "12.7.8",
+    "@types/node": "12.12.17",
     "supertest": "4.0.2",
-    "ts-node": "8.4.1"
+    "ts-node": "8.5.4"
   }
 }

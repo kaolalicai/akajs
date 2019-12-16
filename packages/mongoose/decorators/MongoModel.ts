@@ -1,7 +1,7 @@
 import {decorate, injectable} from 'inversify'
 import {ModelMetadata, ITypeMongoOptions} from '../interfaces/mongoose'
 import {METADATA_KEY} from '../constant'
-import {Typegoose} from 'typegoose'
+import {Typegoose} from '@typegoose/typegoose'
 
 /**
  * @deprecated

@@ -3,7 +3,7 @@ import {MongooseConnection} from './MongooseConnection'
 import {Document, Model, Schema} from 'mongoose'
 import {getModelsFromMetadata, getModelMetadata} from './utils/MetaData'
 import {IBaseMongoModel, ITypeMongoOptions} from './interfaces/mongoose'
-import {Typegoose} from 'typegoose'
+import {buildSchema} from '@typegoose/typegoose'
 
 MongooseConnection.getInstance().init()
 
@@ -34,16 +34,14 @@ export class MongoModelBuilder {
         schema = m.schema
         modelName = m.modelName
         collectionName = m.collectionName
-      }
-      if (m instanceof Typegoose) {
+      } else {
         const op: ITypeMongoOptions = modelMetadata.options || {}
-        schema = m.buildSchema(Model, {})
+        schema = buildSchema(Model, {})
         schema.set(modelMetadata.options as any)
         // _.defaults(op, modelMetadata.options)
         collectionName = op.collectionName || m.constructor.name
         modelName = op.modelName || m.constructor.name
       }
-      // TODO 如果有值就不覆盖
       if (!schema.get('toObject')) schema.set('toObject', {getters: true, virtuals: true, minimize: false})
       if (!schema.get('toJSON')) schema.set('toJSON', {getters: true, virtuals: true, minimize: false})
       if (!schema.get('timestamps')) schema.set('timestamps', true)

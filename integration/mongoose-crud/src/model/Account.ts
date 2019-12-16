@@ -1,8 +1,8 @@
 import {TypeMongoModel} from '@akajs/mongoose'
-import {prop, Typegoose, ModelType} from 'typegoose'
+import {prop, ReturnModelType} from '@typegoose/typegoose'
 
 @TypeMongoModel('AccountModel')
-export class Account extends Typegoose {
+export class Account {
   @prop({index: true, required: true})
   phone: string
   @prop()
@@ -11,4 +11,4 @@ export class Account extends Typegoose {
   count?: number
 }
 
-export type AccountModel = ModelType<Account>
+export type AccountModel = ReturnModelType<typeof Account>

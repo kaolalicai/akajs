@@ -1,6 +1,6 @@
-import {prop, Typegoose} from 'typegoose'
+import {prop} from '@typegoose/typegoose'
 
-export class BaseLog extends Typegoose {
+export class BaseLog {
   @prop()
   time: number
   @prop({sparse: true})
