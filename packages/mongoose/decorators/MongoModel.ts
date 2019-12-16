@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import {decorate, injectable} from 'inversify'
 import {ModelMetadata, ITypeMongoOptions} from '../interfaces/mongoose'
 import {METADATA_KEY} from '../constant'
