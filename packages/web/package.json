@@ -1,6 +1,6 @@
 {
   "name": "@akajs/web",
-  "version": "0.5.6",
+  "version": "0.6.1-alpha.0",
   "description": "aka web with koa",
   "scripts": {
     "test": "npm run test"
@@ -11,7 +11,7 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/ioc": "^0.5.5",
+    "@akajs/ioc": "^0.6.1-alpha.0",
     "@akajs/utils": "^0.5.0",
     "@types/koa": "^2.0.50",
     "@types/koa-bodyparser": "^4.3.0",
