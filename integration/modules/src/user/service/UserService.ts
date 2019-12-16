@@ -1,14 +1,14 @@
-import {Service, LazyInject} from '@akajs/ioc'
+import {Service, Autowired} from '@akajs/ioc'
 import {UserModel} from '../model/User'
 import {RecordModel} from '../model/Record'
 
 @Service('UserService')
 export class UserService {
 
-  @LazyInject('UserModel')
+  @Autowired()
   private userModel: UserModel
 
-  @LazyInject('RecordModel')
+  @Autowired()
   private recordModel: RecordModel
 
   async findOneUserByName (name) {

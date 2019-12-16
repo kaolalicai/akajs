@@ -9,7 +9,7 @@ module.exports = {
     debug: true,
     connections: [
       {
-        name: 'db',
+        name: 'db-name',
         url: process.env.MONGODB || 'mongodb://localhost/unit-test',
         options: {}
       }

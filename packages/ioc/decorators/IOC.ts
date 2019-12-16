@@ -1,6 +1,7 @@
 import {decorate, injectable, interfaces as inversifyInterfaces, inject} from 'inversify'
 import {container} from '../cantainer'
 import getDecorators from 'inversify-inject-decorators'
+import {logger} from '@akajs/utils'
 
 const {lazyInject} = getDecorators(container, false)
 export {inject as Inject, injectable as Injectable} from 'inversify'
@@ -13,16 +14,20 @@ export function Service (
     // decorate(provide(serviceIdentifier, true), target)
     decorate(injectable(), target)
     if (serviceIdentifier === undefined) {
-      if (target.name) {
-        console.log('auto bind service ', target.name)
-        serviceIdentifier = target.name
-      }
+      serviceIdentifier = autoIdentify(target)
     }
     container.bind(serviceIdentifier).to(target).inSingletonScope()
     if (typeof (serviceIdentifier) === 'string') {
       container.bind(fixIdentifier(serviceIdentifier)).to(target).inSingletonScope()
     }
     return target
+  }
+}
+
+export function autoIdentify (target) {
+  if (target.name) {
+    logger.info('auto identify', target.name)
+    return target.name
   }
 }
 
@@ -36,7 +41,7 @@ export function fixIdentifier (key) {
  */
 export function Autowired () {
   return function (target: any, targetKey: string, index?: number) {
-    let serviceIdentifier: inversifyInterfaces.ServiceIdentifier<any> = null
+    let serviceIdentifier: string
     // Property
     if (targetKey) {
       let key = fixIdentifier(targetKey)
@@ -50,6 +55,10 @@ export function Autowired () {
     if (serviceIdentifier === null) {
       throw new Error('Autowired fail 找不到能够注入的对象 ')
     }
-    return inject(serviceIdentifier)(target, targetKey, index)
+    if (serviceIdentifier.includes('model')) {
+      return lazyInject(serviceIdentifier)(target, targetKey)
+    } else {
+      return inject(serviceIdentifier)(target, targetKey, index)
+    }
   }
 }

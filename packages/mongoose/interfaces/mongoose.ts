@@ -14,7 +14,7 @@ export interface ITypeMongoOptions extends SchemaOptions {
 }
 
 export interface ModelMetadata {
-  identify: symbol | string
+  identify: string
   options?: ITypeMongoOptions
   target: any
 }

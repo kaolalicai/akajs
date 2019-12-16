@@ -1,5 +1,5 @@
-import {container} from '@akajs/ioc'
-import {MongooseConnection} from './MongooseConnection'
+import {container, autoIdentify, fixIdentifier} from '@akajs/ioc'
+import {MongooseConnection, MongoConnectionKey} from './MongooseConnection'
 import {Document, Model, Schema} from 'mongoose'
 import {getModelsFromMetadata, getModelMetadata} from './utils/MetaData'
 import {IBaseMongoModel, ITypeMongoOptions} from './interfaces/mongoose'
@@ -36,6 +36,9 @@ export class MongoModelBuilder {
         collectionName = m.collectionName
       } else {
         const op: ITypeMongoOptions = modelMetadata.options || {}
+        if (op.db) {
+          db = this.connection.dbs.get(MongoConnectionKey + op.db)
+        }
         schema = buildSchema(Model, {})
         schema.set(modelMetadata.options as any)
         // _.defaults(op, modelMetadata.options)
@@ -46,7 +49,15 @@ export class MongoModelBuilder {
       if (!schema.get('toJSON')) schema.set('toJSON', {getters: true, virtuals: true, minimize: false})
       if (!schema.get('timestamps')) schema.set('timestamps', true)
       const mongooseModel = db.model<Document>(modelName, schema, collectionName || modelName)
-      container.bind<Model<Document>>(modelMetadata.identify).toConstantValue(mongooseModel)
+      let identifier = modelMetadata.identify
+      if (identifier === undefined || identifier === null) {
+        identifier = autoIdentify(modelMetadata.target)
+      }
+      if (!identifier.includes('model') && !identifier.includes('Model')) {
+        identifier = identifier + 'Model'
+      }
+      container.bind(fixIdentifier(identifier)).toConstantValue(mongooseModel)
+      container.bind<Model<Document>>(identifier).toConstantValue(mongooseModel)
     })
   }
 }

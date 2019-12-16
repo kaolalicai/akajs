@@ -8,6 +8,8 @@ import {TYPE} from './constant'
 
 (mongoose as any).Promise = Promise
 
+export const MongoConnectionKey = 'MongoConnection-'
+
 export class MongooseConnection {
   get defaultCon (): Connection {
     return this._default
@@ -62,7 +64,7 @@ export class MongooseConnection {
         this._default = con
         container.bind(TYPE.DEFAULT_CONNECTION).toConstantValue(con)
       }
-      let key = 'MongoConnection-' + c.name
+      let key = MongoConnectionKey + c.name
       this._dbs.set(key, con)
       container.bind<Connection>(Symbol.for(key)).toConstantValue(con)
     }

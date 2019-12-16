@@ -1,7 +1,7 @@
 import {TypeMongoModel} from '@akajs/mongoose'
 import {prop, ReturnModelType} from '@typegoose/typegoose'
 
-@TypeMongoModel('AccountModel')
+@TypeMongoModel()
 export class Account {
   @prop({index: true, required: true})
   phone: string

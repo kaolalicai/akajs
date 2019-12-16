@@ -1,7 +1,8 @@
 import {TypeMongoModel} from '@akajs/mongoose'
 import {prop, ReturnModelType} from '@typegoose/typegoose'
 
-@TypeMongoModel('UserModel')
+// 可以指定 db 连接名
+@TypeMongoModel(null, {db: 'db-name'})
 export class User {
   @prop({index: true, required: true})
   phone: string

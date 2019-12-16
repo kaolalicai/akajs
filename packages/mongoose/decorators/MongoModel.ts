@@ -14,7 +14,7 @@ export function MongoModel (identify: symbol | string) {
     decorate(injectable(), target)
 
     let currentMetadata: ModelMetadata = {
-      identify: identify,
+      identify: identify.toString(),
       target: target
     }
 
@@ -35,7 +35,7 @@ export function MongoModel (identify: symbol | string) {
   }
 }
 
-export function TypeMongoModel (identify: symbol | string, options?: ITypeMongoOptions) {
+export function TypeMongoModel (identify?: string, options?: ITypeMongoOptions) {
   return function (target: any) {
     decorate(injectable(), target)
 
