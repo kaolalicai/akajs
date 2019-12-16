@@ -1,6 +1,6 @@
 {
   "name": "@akajs/mongoose",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "description": "aka mongoose",
   "scripts": {
     "test": "npm run test"
