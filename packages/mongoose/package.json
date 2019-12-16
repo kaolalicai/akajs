@@ -15,6 +15,7 @@
     "@akajs/utils": "^0.5.0",
     "@typegoose/typegoose": "^6.1.7",
     "@types/mongoose": "^5.5.34",
+    "cls-hooked": "^4.2.2",
     "config": "^3.2.4",
     "lodash": "^4.17.15",
     "mongoose": "^5.8.1"
