@@ -294,6 +294,14 @@ UserService.ts
 @Service()
 export class UserService {
 }
+
+User.ts
+```ts
+@TypeMongoModel()
+export class User {
+}
+
+export type UserModel = ReturnModelType<typeof User>
 ```
 
 UserController.ts
@@ -303,9 +311,23 @@ export class UserController {
 
   @Autowired()
   public userService: UserService
+
+  @Autowired()
+  public userModel: UserModel
 }
 ```
 
+typescript 提供的注解功能有限，Autowired 可以读取到被注入的变量名字，所以可以通过名字来进行默认的注入。
+在上面的例子中:
+- @Service() === @Service('UserService')
+- @TypeMongoModel() === @TypeMongoModel('UserModel')
+
+而 Autowired 则默认做了以下事情：
+
+- @Autowired() === Inject('UserService')  // 通过被注解的变量名 userService 来翻译
+- @Autowired() === LazeInject('UserModel')    // 通过被注解的变量名 userModel 来翻译，如果存在 Model 关键字，则使用 LazeInject
+
+注意，为了处理大小写问题，@Service() 自动绑定的 key 实际上是全小写的。
 
 ## 参数和返回值处理
 
@@ -403,22 +425,30 @@ export class User implements IBaseMongoModel {
 
 ```ts
 import {TypeMongoModel} from '@akajs/mongoose'
-import {prop, Typegoose, ModelType} from 'typegoose'
+import {ReturnModelType} from '@typegoose/typegoose'
 
-@TypeMongoModel('UserModel')
-export class User extends Typegoose {
-  @prop({index: true, required: true})
+@TypeMongoModel()
+export class User {
   phone: string
-  @prop()
-  name?: string
-  @prop()
-  count?: number
+  name: string
+  count: number
 }
 
-export type UserModel = ModelType<User>
+export type RecordModel = ReturnModelType<typeof User>
 ```
 
+**注意** typegoose 6.x 版本进行了重大更新，npm 库也进行了迁移，如果你之前使用 typegoose 5.x，需要按照 [此文档](https://typegoose.github.io/typegoose/guides/migrate-to-6/#methods-staticmethod-instancemethod-virtuals) 进行迁移升级
+
+================================================================
+
 程序初始化的时候会初始化 mongoose 连接并注入 model 到容器中。
+
+app.ts
+```ts
+import {initMongoose} from '@akajs/mongoose'
+initMongoose()
+```
+
 mongodb 的连接配置信息在 config 中定义
 
 ```js
@@ -453,6 +483,7 @@ export class UserController {
 ```
 
 **注意**：这里实际注入的并不是 User 这个Class的实例，而是 mongoose 注册的 model。
+**注意**：如果你需要连接多个 db 实例，请参考 integration/mongoose-crud 示例。
 
 ## CRUD
 通过 CrudController 注解一键生成增查删改接口，restful 风格

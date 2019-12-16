@@ -1,3 +1,7 @@
+## 0.5.5
+- feat: 升级 typegoose 到 6.x 版本
+- feat: Autowired 注解支持自动匹配 TypeMongoModel 注解
+
 ## 0.5.0
 - feat: @akajs/core 拆分为 @akajs/ioc 和 @akajs/web
 - feat: @akajs/crud 并入 @akajs/web
