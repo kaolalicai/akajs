@@ -52,7 +52,7 @@ export function Autowired () {
     if (typeof index === 'number') {
       throw new Error('Autowired fail 不支持注入到参数中 ')
     }
-    if (serviceIdentifier === null) {
+    if (serviceIdentifier === null || serviceIdentifier === undefined) {
       throw new Error('Autowired fail 找不到能够注入的对象 ')
     }
     if (serviceIdentifier.includes('model')) {
