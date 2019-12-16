@@ -485,7 +485,7 @@ export class UserController {
 **注意**：这里实际注入的并不是 User 这个Class的实例，而是 mongoose 注册的 model。
 **注意**：如果你需要连接多个 db 实例，请参考 integration/mongoose-crud 示例。
 
-## Mongoose 事务（未实现）
+## Mongoose 事务
 MongoDB 4.0 开始提供了事务支持，mongoose 也提供了相应的实现，不过目前的写法还是比较繁琐，
 你需要在每一个事务里做提交和回滚的处理，所以 akajs 提供了一个事务的注解来简化这个处理流程。
 ```ts

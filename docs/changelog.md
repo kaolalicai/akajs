@@ -1,3 +1,6 @@
+## 0.6.0
+- feat: 支持 mongodb 事务，提供注解工具
+
 ## 0.5.5
 - feat: 升级 typegoose 到 6.x 版本
 - feat: Autowired 注解支持自动匹配 TypeMongoModel 注解
