@@ -1,7 +1,6 @@
 import {decorate, injectable} from 'inversify'
 import {ModelMetadata, ITypeMongoOptions} from '../interfaces/mongoose'
 import {METADATA_KEY} from '../constant'
-import {Typegoose} from '@typegoose/typegoose'
 
 /**
  * @deprecated
@@ -35,7 +34,7 @@ export function MongoModel (identify: symbol | string) {
   }
 }
 
-export function TypeMongoModel<T extends Typegoose> (identify: symbol | string, options?: ITypeMongoOptions) {
+export function TypeMongoModel (identify: symbol | string, options?: ITypeMongoOptions) {
   return function (target: any) {
     decorate(injectable(), target)
 
