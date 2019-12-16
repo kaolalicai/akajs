@@ -485,6 +485,55 @@ export class UserController {
 **注意**：这里实际注入的并不是 User 这个Class的实例，而是 mongoose 注册的 model。
 **注意**：如果你需要连接多个 db 实例，请参考 integration/mongoose-crud 示例。
 
+## Mongoose 事务（未实现）
+MongoDB 4.0 开始提供了事务支持，mongoose 也提供了相应的实现，不过目前的写法还是比较繁琐，
+你需要在每一个事务里做提交和回滚的处理，所以 akajs 提供了一个事务的注解来简化这个处理流程。
+```ts
+import * as mongoose from 'mongoose'
+import {Schema} from 'mongoose'
+import * as assert from 'assert'
+import {Transactional, getSession} from './decorators/Transactional'
+
+mongoose.connect('mongodb://localhost:27017,localhost:27018,localhost:27019/test?replicaSet=rs', {useNewUrlParser: true})
+mongoose.set('debug', true)
+let db = mongoose.connection
+const Customer = db.model('Customer', new Schema({name: String}))
+
+class ClassA {
+  @Transactional()
+  async main (key) {
+    await new Customer({name: 'ClassA'}).save({session: getSession()})
+    const doc1 = await Customer.findOne({name: 'ClassA'})
+    assert.ok(!doc1)
+    await new ClassB().step2()
+    return key
+  }
+}
+
+class ClassB {
+  async step2 () {
+    const doc2 = await Customer.findOne({name: 'ClassA'}).session(getSession())
+    assert.ok(doc2)
+    await Customer.remove({}).session(getSession())
+  }
+}
+
+new ClassA().main('aaa').then((res) => {
+  console.log('res', res)
+  mongoose.disconnect(console.log)
+}).catch(console.error)
+
+```
+
+@Transactional() 注解会自动提交或回滚事务（发生异常时）。
+为了避免嵌套调用时，你需要一直传递 session 的尴尬~，akajs 提供全局的 getSession() 方法，
+其实现原理是依赖 [Async Hooks](https://nodejs.org/api/async_hooks.html) ，是 Node 的实验性特性，
+你对此介意的话，请不要在生产环境使用。
+
+
+当然，在每一个需要 Session 的地方调用 getSession()  方法还是稍显累赘，我们可以通过 wrap mongoose 的各个方法，
+来实现自动注入 session，但是工作量有些多，暂时没时间做。
+
 ## CRUD
 通过 CrudController 注解一键生成增查删改接口，restful 风格
 
