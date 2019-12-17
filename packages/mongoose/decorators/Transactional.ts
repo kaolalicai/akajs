@@ -6,7 +6,7 @@ const ns = createNamespace('Transactional')
 
 export function getSession (): ClientSession {
   const session = ns.get('session')
-  if (!session) throw new Error('getSession 需要在方法中启用 @Transactional')
+  // if (!session) throw new Error('getSession 需要在方法中启用 @Transactional')
   return session
 }
 
@@ -15,7 +15,7 @@ export function Transactional (options?: { connectionName?: string }): MethodDec
     const originalMethod = descriptor.value
     descriptor.value = async function (...args: any[]) {
       // const runOriginal = async () => originalMethod.apply(this, [...args])
-      await ns.runAndReturn(async () => {
+      return await ns.runAndReturn(async () => {
         let db = MongooseConnection.getInstance().defaultCon
         if (options && options.connectionName) {
           const temp = MongooseConnection.getInstance().dbs.get(options.connectionName)
