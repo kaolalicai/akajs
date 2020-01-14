@@ -2,7 +2,7 @@ import {Service, LazyInject} from '@akajs/ioc'
 import {Transactional, getSession} from '@akajs/mongoose'
 import {UserModel} from '../model/User'
 import * as assert from 'assert'
-import {BizError} from '../../../../packages/utils'
+import {BizError} from '@akajs/utils'
 
 @Service()
 export class UserService {

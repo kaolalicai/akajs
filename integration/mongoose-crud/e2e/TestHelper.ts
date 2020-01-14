@@ -18,8 +18,9 @@ beforeEach(async function () {
 })
 
 after((done) => {
-  closeDB(done)
+  closeDB()
   console.info(' 测试结束 cleanAll nock')
+  done()
 })
 
 export {request, prefix}
