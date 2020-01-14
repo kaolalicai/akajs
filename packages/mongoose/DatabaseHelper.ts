@@ -27,8 +27,10 @@ export function getModel (str): Model<any> {
   return model
 }
 
-export async function closeDB (callback) {
-  await defaultCon.close(callback)
+export async function closeDB () {
+  for (let db of dbs.values()) {
+    await db.close()
+  }
 }
 
 export async function clearDB () {
