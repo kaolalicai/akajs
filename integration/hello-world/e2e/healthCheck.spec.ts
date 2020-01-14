@@ -11,21 +11,21 @@ describe('healthCheck.spec ', () => {
   })
   it('normal', async () => {
     await request(server)
-      .get('/healthcheck/check')
+      .get('/api/v1/healthcheck/check')
       .expect(200)
     await app.close()
   })
 
   it('edit server health status', async () => {
     await request(server)
-      .get('/healthcheck/status/reset')
+      .get('/api/v1/healthcheck/status/reset')
       .query({status: 'false'})
       .expect(200)
   })
 
   it('unable', async () => {
     await request(server)
-      .get('/healthcheck/check')
+      .get('/api/v1/healthcheck/check')
       .expect(503)
     await app.close()
   })

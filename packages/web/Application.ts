@@ -10,7 +10,7 @@ import * as Router from 'koa-router'
 import * as morgan from 'koa-morgan'
 import * as koaStatic from 'koa-static'
 import {logger} from '@akajs/utils'
-import {buildRouters, HealthCheckRouter} from './router'
+import {buildRouters, buildHealthCheck} from './router'
 import {responseFormatter} from './middleware/ResponseFormatter'
 import {parameters} from './middleware/Parameters'
 import {requestLog} from './middleware/RequestLog'
@@ -106,8 +106,7 @@ export class Application {
     this._router = this._config.router || new Router({prefix: routerPrefix})
     // routers
     buildRouters(container, this._router)
-    this._app.use(HealthCheckRouter.routes())
-    this._app.use(HealthCheckRouter.allowedMethods())
+    buildHealthCheck(this._router)
     this._app.use(this._router.routes())
     this._app.use(this._router.allowedMethods())
   }
