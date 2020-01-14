@@ -1,6 +1,6 @@
 {
   "name": "@akajs/ioc",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "aka ioc",
   "scripts": {
     "test": "npm run test"
@@ -11,7 +11,7 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/utils": "^0.6.4",
+    "@akajs/utils": "^0.6.5",
     "inversify": "^5.0.1",
     "inversify-binding-decorators": "^4.0.0",
     "inversify-inject-decorators": "^3.1.0"
