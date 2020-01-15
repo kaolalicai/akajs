@@ -31,7 +31,8 @@ export async function requestLog (ctx, next) {
     response = {err: err.message, stack: err.stack}
     throw err
   } finally {
-    if (['GET', 'OPTION'].includes(ctx.req.method)) return
+    if (['GET', 'OPTION', 'HEAD'].includes(ctx.req.method)) return
+    if (ctx.url.includes('healthcheck')) return
     if (!container.isBound('LogModel')) return
     response = response || ctx.body
     const userId = getUserId(ctx, response)
