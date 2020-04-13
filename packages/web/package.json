@@ -1,6 +1,6 @@
 {
   "name": "@akajs/web",
-  "version": "0.6.6",
+  "version": "1.0.0-alpha.0",
   "description": "aka web with koa",
   "scripts": {
     "test": "npm run test"
@@ -11,7 +11,7 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/utils": "^0.6.5",
+    "@akajs/utils": "^1.0.0-alpha.0",
     "@nestjs/common": "^7.0.7",
     "@nestjs/swagger": "^4.5.1",
     "rxjs": "^6.5.5"
