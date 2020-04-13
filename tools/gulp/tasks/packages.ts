@@ -7,7 +7,6 @@ import * as log from 'fancy-log'
 // Has to be a hardcoded object due to build order
 const packages = {
   utils: createProject('packages/utils/tsconfig.json'),
-  ioc: createProject('packages/ioc/tsconfig.json'),
   web: createProject('packages/web/tsconfig.json'),
   mongoose: createProject('packages/mongoose/tsconfig.json')
 }

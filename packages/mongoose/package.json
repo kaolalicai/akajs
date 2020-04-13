@@ -11,14 +11,17 @@
   "author": "nick",
   "license": "MIT",
   "dependencies": {
-    "@akajs/ioc": "^0.6.5",
     "@akajs/utils": "^0.6.5",
-    "@typegoose/typegoose": "^6.1.7",
-    "@types/mongoose": "^5.5.34",
-    "cls-hooked": "^4.2.2",
-    "config": "^3.2.4",
+    "@nestjs/common": "^7.0.7",
+    "@typegoose/typegoose": "^6.4.0",
+    "config": "^3.3.1",
     "lodash": "^4.17.15",
-    "mongoose": "^5.8.1"
+    "mockjs": "^1.1.0",
+    "mongoose": "^5.9.7",
+    "nestjs-typegoose": "^7.1.14"
   },
-  "gitHead": "f5ea113001ae30b9ff1fbbdc39c44e66a3cd8682"
+  "gitHead": "f5ea113001ae30b9ff1fbbdc39c44e66a3cd8682",
+  "devDependencies": {
+    "@types/mockjs": "^1.0.2"
+  }
 }

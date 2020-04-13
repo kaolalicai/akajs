@@ -8,7 +8,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json \"packages/**/*.ts\" -e \"*.spec.ts\" --fix",
     "clean": "gulp clean:bundle",
     "prebuild": "rm -rf node_modules/@akajs",
-    "build": "gulp build --dist node_modules/@akajs",
+    "build": "gulp build --dist ../klg-nest-starter/node_modules/@akajs",
     "postbuild": "gulp move",
     "prebuild:prod": "npm run clean",
     "build:prod": "gulp build",
